@@ -65,7 +65,7 @@
                 const data = await res.json();
                 
                 document.getElementById('usd').innerText = data.usd.brl.toFixed(2);
-                document.getElementById('btc').innerText = data.bitcoin.brl.toFixed(2);
+                document.getElementById('btc').innerText = Math.floor(data.bitcoin.brl);
                 document.getElementById('ltc').innerText = data.litecoin.brl.toFixed(2);
                 document.getElementById('xmr').innerText = data.monero.brl.toFixed(2);
             } catch (error) {
