@@ -1,9 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-<title>Luan L.</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valor do Bitcoin em Tempo Real</title>
+    <style>
+        #BTC {
+            color: orange;
+            font-size: 24px;
+            background-color: white;
+            padding: 5px;
+        }
+    </style>
 </head>
 <body>
-<p>Twitter: @iluanlima </p>
+    <span id="BTC">Bitcoin</span>
+    <script>
+        async function fetchBTC() {
+            try {
+                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=brl');
+                const data = await res.json();
+                document.getElementById('BTC').innerText = `Bitcoin: R$ ${data.bitcoin.brl.toFixed(2)}`;
+            } catch (error) {
+                document.getElementById('BTC').innerText = 'Erro ao carregar';
+                console.error('Erro:', error);
+            }
+        }
+        fetchBTC();
+        setInterval(fetchBTC, 60000); // Atualiza a cada 60 segundos
+    </script>
 </body>
 </html>
