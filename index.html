@@ -3,31 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valor do Bitcoin em Tempo Real</title>
+    <title>Cotações em Tempo Real</title>
     <style>
-        #BTC {
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .usd {
+            color: green;
+        }
+        .btc {
             color: orange;
-            font-size: 24px;
-            background-color: white;
-            padding: 5px;
+        }
+        .ltc {
+            color: silver;
+        }
+        .xmr {
+            color: red;
         }
     </style>
 </head>
 <body>
-    <span id="BTC">Bitcoin</span>
+    <table id="cotacoes">
+        <thead>
+            <tr>
+                <th>Moeda</th>
+                <th>Valor (BRL)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="usd">Dólar (USD)</td>
+                <td id="usd">Carregando...</td>
+            </tr>
+            <tr>
+                <td class="btc">Bitcoin (BTC)</td>
+                <td id="btc">Carregando...</td>
+            </tr>
+            <tr>
+                <td class="ltc">Litecoin (LTC)</td>
+                <td id="ltc">Carregando...</td>
+            </tr>
+            <tr>
+                <td class="xmr">Monero (XMR)</td>
+                <td id="xmr">Carregando...</td>
+            </tr>
+        </tbody>
+    </table>
+
     <script>
-        async function fetchBTC() {
+        async function fetchCotacoes() {
             try {
-                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=brl');
+                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=usd,bitcoin,litecoin,monero&vs_currencies=brl');
                 const data = await res.json();
-                document.getElementById('BTC').innerText = `Bitcoin: R$ ${data.bitcoin.brl.toFixed(2)}`;
+                
+                document.getElementById('usd').innerText = data.usd.brl.toFixed(2);
+                document.getElementById('btc').innerText = data.bitcoin.brl.toFixed(2);
+                document.getElementById('ltc').innerText = data.litecoin.brl.toFixed(2);
+                document.getElementById('xmr').innerText = data.monero.brl.toFixed(2);
             } catch (error) {
-                document.getElementById('BTC').innerText = 'Erro ao carregar';
-                console.error('Erro:', error);
+                console.error('Erro ao buscar cotações:', error);
             }
         }
-        fetchBTC();
-        setInterval(fetchBTC, 60000); // Atualiza a cada 60 segundos
+
+        fetchCotacoes();
+        setInterval(fetchCotacoes, 60000); // Atualiza a cada 60 segundos
     </script>
 </body>
 </html>
