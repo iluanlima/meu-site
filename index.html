@@ -29,15 +29,15 @@
             font-weight: bold;
         }
         td.moeda {
-            color: #0057B7; /* Azul */
-            font-weight: normal; /* Formato normal */
+            background-color: #0057B7; /* Fundo azul */
+            color: white; /* Texto branco */
         }
         td.valor {
-            color: #FFD700; /* Amarelo */
-            font-weight: normal; /* Formato normal */
+            background-color: #FFD700; /* Fundo amarelo */
+            color: black; /* Texto preto */
         }
         tbody td {
-            color: #333333; /* Cinza escuro */
+            font-weight: normal; /* Formato normal */
         }
         .flag {
             position: absolute;
@@ -115,7 +115,7 @@
     <button class="theme-toggle" id="themeToggle">☀️</button>
 
     <script>
-        // Função para formatar valores em BRL
+        // Função para formatar valores em R$
         function formatarBRL(valor) {
             if (valor > 1000) {
                 return `R$${valor.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}`; // Remove casas decimais para valores > 1000
