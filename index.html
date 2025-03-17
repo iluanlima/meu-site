@@ -9,7 +9,7 @@
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: #2B2B2B; /* Tema escuro por padrão */
-            color: #ffffff;
+            color: #ffffff; /* Texto branco no modo noturno */
             transition: background-color 0.3s, color 0.3s;
         }
         .container {
@@ -51,33 +51,33 @@
             background-color: #FFD700;
             color: black;
         }
-        .lists-container {
+        .info-container {
             position: fixed;
             bottom: 10px;
             left: 10px;
             display: flex;
             flex-direction: column;
             gap: 5px;
+            font-size: 14px;
         }
-        .list {
+        .info-item {
             display: flex;
             align-items: center;
-            padding: 5px 10px;
-            font-size: 14px;
-            color: inherit; /* Herdar a cor conforme o tema */
-            transition: color 0.3s;
+            gap: 5px;
         }
-        .list-blue {
-            background-color: #0057B7; /* Azul para a Ucrânia */
+        .theme-light {
+            background-color: #FFFFFF;
+            color: #000000; /* Texto preto no modo diurno */
         }
-        .list-yellow {
-            background-color: #FFD700; /* Amarelo para o Brasil */
+        .theme-light .info-item {
+            color: #000000;
         }
-        .theme-light .list {
-            color: #000000; /* Fonte preta no modo diurno */
+        .theme-dark {
+            background-color: #2B2B2B;
+            color: #FFFFFF; /* Texto branco no modo noturno */
         }
-        .theme-dark .list {
-            color: #ffffff; /* Fonte branca no modo noturno */
+        .theme-dark .info-item {
+            color: #FFFFFF;
         }
         .theme-toggle {
             position: fixed;
@@ -136,15 +136,15 @@
         </table>
     </div>
 
-    <div class="lists-container">
-        <!-- Lista azul para a Ucrânia -->
-        <div class="list list-blue">
-            🇺🇦 📅 <span id="data-ucrania"></span> ⏰ <span id="hora-ucrania"></span>
+    <div class="info-container">
+        <!-- Informações do Brasil (em cima) -->
+        <div class="info-item">
+            🇧🇷 📅 <span id="data-brasil"></span> ⏰ <span id="hora-brasil"></span>
         </div>
 
-        <!-- Lista amarela para o Brasil -->
-        <div class="list list-yellow">
-            🇧🇷 📅 <span id="data-brasil"></span> ⏰ <span id="hora-brasil"></span>
+        <!-- Informações da Ucrânia (em baixo) -->
+        <div class="info-item">
+            🇺🇦 📅 <span id="data-ucrania"></span> ⏰ <span id="hora-ucrania"></span>
         </div>
     </div>
 
