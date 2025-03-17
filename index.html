@@ -8,14 +8,16 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #121212; /* Fundo padrão modo escuro */
-            color: #ffffff; /* Texto branco padrão */
+            background-color: #121212; /* Modo escuro padrão */
+            color: #ffffff; /* Texto padrão para modo escuro */
+            transition: background-color 0.3s, color 0.3s;
         }
         table {
             width: 90%;
             margin: 20px auto;
             border-collapse: collapse;
-            background-color: #1f1f1f; /* Fundo da tabela modo escuro */
+            background-color: #1f1f1f; /* Fundo da tabela no modo escuro */
+            transition: background-color 0.3s;
         }
         th, td {
             border: 1px solid #444; /* Borda em modo escuro */
@@ -51,6 +53,30 @@
         }
         .flag-right {
             right: 10px;
+        }
+        .toggle-theme {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
+            background-color: #1f1f1f;
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .toggle-theme:hover {
+            background-color: #444;
+            transform: scale(1.1);
+        }
+        .toggle-theme img {
+            width: 20px;
+            height: 20px;
         }
     </style>
 </head>
@@ -100,13 +126,35 @@
         </tbody>
     </table>
 
+    <button class="toggle-theme" onclick="toggleTheme()">
+        <img src="https://cdn-icons-png.flaticon.com/512/169/169367.png" alt="Alternar Tema">
+    </button>
+
     <script>
+        function toggleTheme() {
+            const body = document.body;
+            body.classList.toggle('light-mode');
+            
+            if (body.classList.contains('light-mode')) {
+                body.style.backgroundColor = '#ffffff';
+                body.style.color = '#000000';
+                document.querySelectorAll('table').forEach(table => {
+                    table.style.backgroundColor = '#f9f9f9';
+                });
+            } else {
+                body.style.backgroundColor = '#121212';
+                body.style.color = '#ffffff';
+                document.querySelectorAll('table').forEach(table => {
+                    table.style.backgroundColor = '#1f1f1f';
+                });
+            }
+        }
+
         async function fetchCotacoes() {
             try {
                 const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=usd,eur,gbp,bitcoin,ethereum,litecoin,monero,toncoin&vs_currencies=brl');
                 const data = await res.json();
 
-                // Atualizando os valores na tabela
                 document.getElementById('usd').innerText = data.usd?.brl?.toFixed(2) || "N/A";
                 document.getElementById('eur').innerText = data.eur?.brl?.toFixed(2) || "N/A";
                 document.getElementById('gbp').innerText = data.gbp?.brl?.toFixed(2) || "N/A";
@@ -116,10 +164,7 @@
                 document.getElementById('xmr').innerText = data.monero?.brl?.toFixed(2) || "N/A";
                 document.getElementById('ton').innerText = data.toncoin?.brl?.toFixed(2) || "N/A";
             } catch (error) {
-                // Logando erro no console
                 console.error('Erro ao buscar cotações:', error);
-
-                // Exibindo mensagem de erro na interface
                 document.querySelectorAll('td[id]').forEach(td => td.innerText = "Erro");
             }
         }
