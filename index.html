@@ -8,8 +8,8 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #2B2B2B; /* Fundo cinza escuro por padrão */
-            color: #ffffff; /* Texto branco para modo escuro */
+            background-color: #2B2B2B; /* Fundo cinza escuro */
+            color: #ffffff; /* Texto branco */
             transition: background-color 0.3s, color 0.3s;
         }
         table {
@@ -23,13 +23,21 @@
             padding: 8px;
             text-align: left;
         }
-        th:first-child, .moeda { /* Cor azul para coluna "Moeda" */
-            background-color: #0057B7;
-            color: white;
+        th { /* Estilo para "Moeda:" e "Valor (BRL):" */
+            background-color: #0057B7; /* Azul */
+            color: white; /* Texto branco */
+            font-weight: bold;
         }
-        th:last-child, .valor { /* Cor amarela para coluna "Valor (BRL)" */
-            background-color: #FFD700;
-            color: black;
+        td.moeda {
+            color: #0057B7; /* Azul */
+            font-weight: normal; /* Formato normal */
+        }
+        td.valor {
+            color: #FFD700; /* Amarelo */
+            font-weight: normal; /* Formato normal */
+        }
+        tbody td {
+            color: #333333; /* Cinza escuro */
         }
         .flag {
             position: absolute;
@@ -53,8 +61,8 @@
             height: 50px;
             border: none;
             border-radius: 25px;
-            background-color: #FFD700; /* Amarelo inicial */
-            color: #000; /* Preto inicial */
+            background-color: #FFD700;
+            color: #000;
             font-size: 20px;
             display: flex;
             align-items: center;
@@ -64,19 +72,19 @@
             transition: background-color 0.3s, color 0.3s;
         }
         .theme-toggle.dark {
-            background-color: #2B2B2B; /* Cinza escuro no modo claro */
-            color: #FFD700; /* Amarelo no modo escuro */
+            background-color: #2B2B2B;
+            color: #FFD700;
         }
     </style>
 </head>
 <body>
-    <div class="flag flag-left"></div> <!-- Bandeira da Ucrânia no canto superior esquerdo -->
-    <div class="flag flag-right"></div> <!-- Bandeira da Ucrânia no canto superior direito -->
+    <div class="flag flag-left"></div>
+    <div class="flag flag-right"></div>
     <table id="cotacoes">
         <thead>
             <tr>
-                <th class="moeda">Moeda</th>
-                <th class="valor">Valor (BRL)</th>
+                <th class="moeda">Moeda:</th>
+                <th class="valor">Valor (BRL):</th>
             </tr>
         </thead>
         <tbody>
@@ -107,23 +115,27 @@
     <button class="theme-toggle" id="themeToggle">☀️</button>
 
     <script>
-        // Função para formatar valores em R$ com separadores de milhar
+        // Função para formatar valores em BRL
         function formatarBRL(valor) {
-            return `R$${valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            if (valor > 1000) {
+                return `R$${valor.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}`; // Remove casas decimais para valores > 1000
+            } else {
+                return `R$${valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`; // Mantém 2 casas para valores <= 1000
+            }
         }
 
         async function fetchCotacoes() {
             try {
-                // URL da CoinGecko para obter as cotações em BRL
+                // Chamando a API da CoinGecko
                 const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=usd,bitcoin,ethereum,litecoin,monero&vs_currencies=brl');
                 const data = await res.json();
 
                 // Atualizando os valores na tabela
-                document.getElementById('usd').innerText = formatarBRL(data.usd.brl.toFixed(2));
-                document.getElementById('btc').innerText = formatarBRL(Math.round(data.bitcoin.brl)); // Valores arredondados
-                document.getElementById('eth').innerText = formatarBRL(Math.round(data.ethereum.brl));
-                document.getElementById('ltc').innerText = formatarBRL(Math.round(data.litecoin.brl));
-                document.getElementById('xmr').innerText = formatarBRL(Math.round(data.monero.brl));
+                document.getElementById('usd').innerText = formatarBRL(data.usd.brl); // Dólar
+                document.getElementById('btc').innerText = formatarBRL(data.bitcoin.brl); // Bitcoin
+                document.getElementById('eth').innerText = formatarBRL(data.ethereum.brl); // Ethereum
+                document.getElementById('ltc').innerText = formatarBRL(data.litecoin.brl); // Litecoin
+                document.getElementById('xmr').innerText = formatarBRL(data.monero.brl); // Monero
             } catch (error) {
                 console.error('Erro ao buscar cotações:', error);
                 document.querySelectorAll('td[id]').forEach(td => td.innerText = 'Erro');
@@ -131,14 +143,14 @@
         }
 
         fetchCotacoes();
-        setInterval(fetchCotacoes, 60000); // Atualiza a cada 60 segundos
+        setInterval(fetchCotacoes, 60000); // Atualiza as cotações a cada 60 segundos
 
-        // Alternância de temas (claro e escuro)
+        // Alternância de tema (claro e escuro)
         const themeToggle = document.getElementById('themeToggle');
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('light');
             const isLight = document.body.classList.contains('light');
-            document.body.style.backgroundColor = isLight ? '#FFFFFF' : '#2B2B2B'; // Cinza escuro para modo escuro
+            document.body.style.backgroundColor = isLight ? '#FFFFFF' : '#2B2B2B';
             document.body.style.color = isLight ? '#000000' : '#FFFFFF';
             themeToggle.innerHTML = isLight ? '🌙' : '☀️';
             themeToggle.classList.toggle('dark', !isLight);
