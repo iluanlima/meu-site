@@ -54,14 +54,18 @@
             color: black;
         }
         .flag-wide {
+            position: fixed; /* Fixa a bandeira na posição */
+            bottom: 0; /* Move para o canto inferior da tela */
+            left: 0;
             width: 100%; /* Preenche 100% da largura */
             height: 75px; /* Altura fixa */
             background: linear-gradient(to bottom, #0057B7 50%, #FFD700 50%);
             border: 1px solid #000;
+            z-index: -1; /* Garante que fique abaixo dos outros elementos */
         }
         .theme-toggle {
             position: fixed;
-            bottom: 10px;
+            bottom: 90px; /* Fica acima da bandeira */
             right: 10px;
             width: 50px;
             height: 50px;
@@ -83,7 +87,7 @@
         }
         .info-bottom-left {
             position: fixed;
-            bottom: 10px;
+            bottom: 90px; /* Fica acima da bandeira */
             left: 10px;
             font-size: 14px;
             display: flex;
