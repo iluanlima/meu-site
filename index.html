@@ -23,21 +23,23 @@
             padding: 8px;
             text-align: left;
         }
-        th:first-child, .moeda { /* Cor azul para "Moeda" */
+        th:first-child, .moeda { /* Cor azul escuro mais forte para "Moeda" */
             background-color: #0057B7;
-            color: #ffffff;
+            color: #ffffff; /* Texto branco */
+            font-weight: bold;
         }
-        th:last-child, .valor { /* Cor amarela para "Valor (BRL)" */
+        th:last-child, .valor { /* Cor amarela mais forte para "Valor" */
             background-color: #FFD700;
-            color: #000000;
+            color: #000000; /* Texto preto */
+            font-weight: bold;
         }
         td.moeda {
-            color: #0057B7; /* Azul mais forte para "Moeda" */
-            font-weight: bold;
+            color: #0057B7; /* Azul médio para "Moeda" */
+            font-weight: 600; /* Moderadamente escuro */
         }
         td.valor {
-            color: #FFD700; /* Amarelo mais forte para "Valor" */
-            font-weight: bold;
+            color: #FFD700; /* Amarelo médio para "Valor" */
+            font-weight: 600; /* Moderadamente escuro */
         }
         tbody td {
             color: #333333; /* Cinza escuro para os valores */
@@ -117,27 +119,20 @@
     <button class="theme-toggle" id="themeToggle">☀️</button>
 
     <script>
-        // Função para formatar valores em BRL
         function formatarBRL(valor) {
-            if (valor > 1000) {
-                return `R$${valor.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}`;
-            } else {
-                return `R$${valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-            }
+            return `R$${valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         }
 
         async function fetchCotacoes() {
             try {
-                // Conexão com a API CoinGecko
                 const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=usd,bitcoin,ethereum,litecoin,monero&vs_currencies=brl');
                 const data = await res.json();
 
-                // Atualizando os valores na tabela
-                document.getElementById('usd').innerText = formatarBRL(data.usd.brl);
-                document.getElementById('btc').innerText = formatarBRL(data.bitcoin.brl);
-                document.getElementById('eth').innerText = formatarBRL(data.ethereum.brl);
-                document.getElementById('ltc').innerText = formatarBRL(data.litecoin.brl);
-                document.getElementById('xmr').innerText = formatarBRL(data.monero.brl);
+                document.getElementById('usd').innerText = formatarBRL(data.usd.brl.toFixed(2));
+                document.getElementById('btc').innerText = formatarBRL(Math.round(data.bitcoin.brl));
+                document.getElementById('eth').innerText = formatarBRL(Math.round(data.ethereum.brl));
+                document.getElementById('ltc').innerText = formatarBRL(Math.round(data.litecoin.brl));
+                document.getElementById('xmr').innerText = formatarBRL(Math.round(data.monero.brl));
             } catch (error) {
                 console.error('Erro ao buscar cotações:', error);
                 document.querySelectorAll('td[id]').forEach(td => td.innerText = 'Erro');
@@ -145,9 +140,8 @@
         }
 
         fetchCotacoes();
-        setInterval(fetchCotacoes, 60000); // Atualiza a cada 60 segundos
+        setInterval(fetchCotacoes, 60000);
 
-        // Alternância de tema (claro e escuro)
         const themeToggle = document.getElementById('themeToggle');
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('light');
