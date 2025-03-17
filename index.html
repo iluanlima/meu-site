@@ -32,14 +32,12 @@
             background-color: #0057B7;
             color: white;
         }
-        th.valor {
+        th.valor, th.variacao {
             background-color: #FFD700;
             color: black;
         }
         th.variacao {
-            background-color: #FFD700;
-            color: black;
-            width: 20%; /* Largura um pouco menor */
+            width: 20%; /* Largura reduzida */
         }
         td.moeda {
             background-color: #0057B7;
@@ -52,7 +50,7 @@
         td.variacao {
             background-color: #FFD700; /* Fundo amarelo */
             color: black;
-            text-align: left; /* Realinha os números à esquerda */
+            text-align: left; /* Realinha o texto */
         }
         td.variacao-positiva {
             color: green;
@@ -181,14 +179,17 @@
             const valorElement = document.getElementById(moeda);
             const variacaoElement = document.getElementById(`${moeda}-var`);
 
-            const variacaoAbs = (valor * Math.abs(variacao) / 100).toFixed(2);
+            // Calcula o valor absoluto da variação e o formata
+            const variacaoAbs = `R$${(valor * Math.abs(variacao) / 100).toFixed(2)}`;
 
+            // Formata o valor da moeda
             if (formatarSimples) {
                 valorElement.innerText = `R$ ${valor.toFixed(2)}`;
             } else {
                 valorElement.innerText = `R$ ${(valor / 1000).toLocaleString('pt-BR', { minimumFractionDigits: 0 })}`;
             }
 
+            // Formata a variação com setas e valor absoluto
             variacaoElement.className = 'variacao';
             if (variacao >= 0) {
                 variacaoElement.classList.add('variacao-positiva');
@@ -205,19 +206,22 @@
             const horaBrasil = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 
             const optionsUcrania = { timeZone: 'Europe/Kiev', hour: '2-digit', minute: '2-digit' };
-            const dataUcrania = agora.toLocaleDateString('pt-BR');            const horaUcrania = agora.toLocaleTimeString('pt-BR', optionsUcrania);
+            const dataUcrania = agora.toLocaleDateString('pt-BR', { timeZone: 'Europe/Kiev' });
+            const horaUcrania = agora.toLocaleTimeString('pt-BR', optionsUcrania);
 
+            // Atualiza os elementos do DOM com as datas e horas
             document.getElementById('data-brasil').innerText = dataBrasil;
             document.getElementById('hora-brasil').innerText = horaBrasil;
             document.getElementById('data-ucrania').innerText = dataUcrania;
             document.getElementById('hora-ucrania').innerText = horaUcrania;
         }
-
+        // Função para buscar as cotações e configurar os intervalos
         fetchCotacoes();
-        setInterval(fetchCotacoes, 60000); // Atualiza cotações a cada 60 segundos
-        setInterval(atualizarDataHora, 1000); // Atualiza data e hora a cada 1 segundo
+        setInterval(fetchCotacoes, 60000); // Atualiza as cotações a cada 60 segundos
+        setInterval(atualizarDataHora, 1000); // Atualiza data e hora a cada segundo
         atualizarDataHora();
 
+        // Alterna entre os temas claro e escuro
         const themeToggle = document.getElementById('themeToggle');
         themeToggle.addEventListener('click', () => {
             const body = document.body;
