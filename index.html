@@ -8,12 +8,16 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
+            background-color: white;
+            color: black;
+            transition: background-color 0.3s, color 0.3s;
         }
         table {
             width: 90%;
             margin: 20px auto;
             border-collapse: collapse;
             background-color: white;
+            transition: background-color 0.3s;
         }
         th, td {
             border: 1px solid #ddd;
@@ -45,16 +49,30 @@
             border: 1px solid #000;
         }
         .flag-left {
-            left: 10px; /* Bandeira no canto superior esquerdo */
+            left: 10px;
         }
         .flag-right {
-            right: 10px; /* Bandeira no canto superior direito */
+            right: 10px;
+        }
+        .dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        .dark-mode table {
+            background-color: #1f1f1f;
+        }
+        .dark-mode th:first-child, .dark-mode .moeda {
+            background-color: #003d7a; /* Azul escuro */
+        }
+        .dark-mode th:last-child, .dark-mode .valor {
+            background-color: #ccac00; /* Amarelo escuro */
         }
     </style>
 </head>
 <body>
-    <div class="flag flag-left"></div> <!-- Bandeira da Ucrânia no canto superior esquerdo -->
-    <div class="flag flag-right"></div> <!-- Bandeira da Ucrânia no canto superior direito -->
+    <div class="flag flag-left"></div> <!-- Bandeira no canto superior esquerdo -->
+    <div class="flag flag-right"></div> <!-- Bandeira no canto superior direito -->
+    <button onclick="toggleDarkMode()" style="margin: 20px;">Alternar Modo Escuro</button>
     <table id="cotacoes">
         <thead>
             <tr>
@@ -99,19 +117,23 @@
     </table>
 
     <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
         async function fetchCotacoes() {
             try {
                 const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=usd,eur,gbp,bitcoin,ethereum,litecoin,monero,toncoin&vs_currencies=brl');
                 const data = await res.json();
                 
-                document.getElementById('usd').innerText = data.usd.brl.toFixed(2);
-                document.getElementById('eur').innerText = data.eur.brl.toFixed(2);
-                document.getElementById('gbp').innerText = data.gbp.brl.toFixed(2);
-                document.getElementById('btc').innerText = Math.floor(data.bitcoin.brl);
-                document.getElementById('eth').innerText = Math.floor(data.ethereum.brl);
-                document.getElementById('ltc').innerText = data.litecoin.brl.toFixed(2);
-                document.getElementById('xmr').innerText = data.monero.brl.toFixed(2);
-                document.getElementById('ton').innerText = data.toncoin.brl.toFixed(2);
+                document.getElementById('usd').innerText = data.usd?.brl?.toFixed(2) || "N/A";
+                document.getElementById('eur').innerText = data.eur?.brl?.toFixed(2) || "N/A";
+                document.getElementById('gbp').innerText = data.gbp?.brl?.toFixed(2) || "N/A";
+                document.getElementById('btc').innerText = data.bitcoin?.brl || "N/A";
+                document.getElementById('eth').innerText = data.ethereum?.brl || "N/A";
+                document.getElementById('ltc').innerText = data.litecoin?.brl?.toFixed(2) || "N/A";
+                document.getElementById('xmr').innerText = data.monero?.brl?.toFixed(2) || "N/A";
+                document.getElementById('ton').innerText = data.toncoin?.brl?.toFixed(2) || "N/A";
             } catch (error) {
                 console.error('Erro ao buscar cotações:', error);
             }
