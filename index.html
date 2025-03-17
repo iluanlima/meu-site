@@ -22,7 +22,7 @@
             border-collapse: separate; /* Para bordas separadas */
             border-spacing: 0; /* Remove espaços entre células */
             background-color: white;
-            border: 3px solid white;
+            border: 1px solid white; /* Bordas externas principais */
         }
         th, td {
             width: 50%; /* Cada coluna ocupa 50% */
@@ -31,10 +31,10 @@
             box-sizing: border-box;
         }
         th, td {
-            border: 1px solid white; /* Bordas externas */
+            border: 0.5px solid white; /* Bordas extremamente finas */
         }
         td + td, th + th { /* Borda fina no meio */
-            border-left: 1px solid white;
+            border-left: 0.5px solid white;
         }
         th {
             background-color: #0057B7;
@@ -53,14 +53,9 @@
             background-color: #FFD700;
             color: black;
         }
-        .flags-below {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-        .flag {
-            width: 120px; /* Aumenta o tamanho das bandeiras */
-            height: 75px;
+        .flag-wide {
+            width: 100%; /* Preenche 100% da largura */
+            height: 75px; /* Altura fixa */
             background: linear-gradient(to bottom, #0057B7 50%, #FFD700 50%);
             border: 1px solid #000;
         }
@@ -134,10 +129,7 @@
                 </tr>
             </tbody>
         </table>
-        <div class="flags-below">
-            <div class="flag"></div>
-            <div class="flag"></div>
-        </div>
+        <div class="flag-wide"></div> <!-- Bandeira única larga -->
     </div>
 
     <div class="info-bottom-left">
@@ -200,8 +192,8 @@
         }
 
         fetchCotacoes();
-        setInterval(fetchCotacoes, 60000);
-        setInterval(atualizarDataHora, 1000);
+        setInterval(fetchCotacoes, 60000); // Atualiza cotações a cada 60 segundos
+        setInterval(atualizarDataHora, 1000); // Atualiza data e hora a cada segundo
         atualizarDataHora();
 
         const themeToggle = document.getElementById('themeToggle');
