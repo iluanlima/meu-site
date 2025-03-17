@@ -105,18 +105,22 @@
             try {
                 const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=usd,eur,gbp,bitcoin,ethereum,litecoin,monero,toncoin&vs_currencies=brl');
                 const data = await res.json();
-                
-                // Certifique-se de que as chaves existem antes de exibir os valores
+
+                // Atualizando os valores na tabela
                 document.getElementById('usd').innerText = data.usd?.brl?.toFixed(2) || "N/A";
                 document.getElementById('eur').innerText = data.eur?.brl?.toFixed(2) || "N/A";
                 document.getElementById('gbp').innerText = data.gbp?.brl?.toFixed(2) || "N/A";
-                document.getElementById('btc').innerText = data.bitcoin?.brl || "N/A";
-                document.getElementById('eth').innerText = data.ethereum?.brl || "N/A";
+                document.getElementById('btc').innerText = data.bitcoin?.brl?.toFixed(2) || "N/A";
+                document.getElementById('eth').innerText = data.ethereum?.brl?.toFixed(2) || "N/A";
                 document.getElementById('ltc').innerText = data.litecoin?.brl?.toFixed(2) || "N/A";
                 document.getElementById('xmr').innerText = data.monero?.brl?.toFixed(2) || "N/A";
                 document.getElementById('ton').innerText = data.toncoin?.brl?.toFixed(2) || "N/A";
             } catch (error) {
+                // Logando erro no console
                 console.error('Erro ao buscar cotações:', error);
+
+                // Exibindo mensagem de erro na interface
+                document.querySelectorAll('td[id]').forEach(td => td.innerText = "Erro");
             }
         }
 
