@@ -8,8 +8,8 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #2B2B2B; /* Fundo cinza escuro */
-            color: #ffffff; /* Texto branco */
+            background-color: #2B2B2B;
+            color: #ffffff;
             transition: background-color 0.3s, color 0.3s;
         }
         table {
@@ -23,25 +23,22 @@
             padding: 8px;
             text-align: left;
         }
-        th { /* Estilo para "Moeda:" e "Valor (BRL):" */
-            background-color: #0057B7; /* Azul para "Moeda:" */
-            color: #ffffff; /* Texto branco */
+        th {
+            background-color: #0057B7;
+            color: #ffffff;
             font-weight: bold;
         }
-        th:last-child { /* Preto para o texto "Valor (BRL:)" */
-            background-color: #FFD700; /* Fundo amarelo */
-            color: #000000; /* Texto preto */
+        th:last-child {
+            background-color: #FFD700;
+            color: #000000;
         }
         td.moeda {
-            background-color: #0057B7; /* Fundo azul */
-            color: white; /* Texto branco */
+            background-color: #0057B7;
+            color: white;
         }
         td.valor {
-            background-color: #FFD700; /* Fundo amarelo */
-            color: black; /* Texto preto */
-        }
-        tbody td {
-            font-weight: normal; /* Formato normal */
+            background-color: #FFD700;
+            color: black;
         }
         .flag {
             position: absolute;
@@ -79,6 +76,19 @@
             background-color: #2B2B2B;
             color: #FFD700;
         }
+        .info-bottom {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .info-icon {
+            width: 20px;
+            height: 20px;
+        }
     </style>
 </head>
 <body>
@@ -115,41 +125,52 @@
         </tbody>
     </table>
 
-    <!-- Botão de alternância de tema -->
+    <div class="info-bottom">
+        <img class="info-icon" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Calendar_font_awesome.svg/512px-Calendar_font_awesome.svg.png" alt="Calendário">
+        <span id="data"></span>
+        <img class="info-icon" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Clock_font_awesome.svg/512px-Clock_font_awesome.svg.png" alt="Relógio">
+        <span id="hora"></span>
+    </div>
+
     <button class="theme-toggle" id="themeToggle">☀️</button>
 
     <script>
-        // Função para formatar valores em R$
         function formatarBRL(valor) {
             if (valor > 1000) {
-                return `R$${valor.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}`; // Remove casas decimais para valores > 1000
+                return `R$${valor.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}`;
             } else {
-                return `R$${valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`; // Mantém 2 casas para valores <= 1000
+                return `R$${valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
             }
         }
 
         async function fetchCotacoes() {
             try {
-                // Chamando a API da CoinGecko
                 const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=usd,bitcoin,ethereum,litecoin,monero&vs_currencies=brl');
                 const data = await res.json();
-
-                // Atualizando os valores na tabela
-                document.getElementById('usd').innerText = formatarBRL(data.usd.brl); // Dólar
-                document.getElementById('btc').innerText = formatarBRL(data.bitcoin.brl); // Bitcoin
-                document.getElementById('eth').innerText = formatarBRL(data.ethereum.brl); // Ethereum
-                document.getElementById('ltc').innerText = formatarBRL(data.litecoin.brl); // Litecoin
-                document.getElementById('xmr').innerText = formatarBRL(data.monero.brl); // Monero
+                document.getElementById('usd').innerText = formatarBRL(data.usd.brl);
+                document.getElementById('btc').innerText = formatarBRL(data.bitcoin.brl);
+                document.getElementById('eth').innerText = formatarBRL(data.ethereum.brl);
+                document.getElementById('ltc').innerText = formatarBRL(data.litecoin.brl);
+                document.getElementById('xmr').innerText = formatarBRL(data.monero.brl);
             } catch (error) {
                 console.error('Erro ao buscar cotações:', error);
                 document.querySelectorAll('td[id]').forEach(td => td.innerText = 'Erro');
             }
         }
 
-        fetchCotacoes();
-        setInterval(fetchCotacoes, 60000); // Atualiza as cotações a cada 60 segundos
+        function atualizarDataHora() {
+            const agora = new Date();
+            const data = agora.toLocaleDateString('uk-UA', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            const hora = agora.toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('data').innerText = data;
+            document.getElementById('hora').innerText = hora;
+        }
 
-        // Alternância de tema (claro e escuro)
+        fetchCotacoes();
+        setInterval(fetchCotacoes, 60000);
+        setInterval(atualizarDataHora, 1000);
+        atualizarDataHora();
+
         const themeToggle = document.getElementById('themeToggle');
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('light');
