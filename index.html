@@ -85,9 +85,10 @@
             align-items: center;
             gap: 5px;
         }
-        .info-icon {
-            width: 20px;
-            height: 20px;
+        .info-bottom span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
     </style>
 </head>
@@ -126,10 +127,8 @@
     </table>
 
     <div class="info-bottom">
-        <img class="info-icon" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Calendar_font_awesome.svg/512px-Calendar_font_awesome.svg.png" alt="Calendário">
-        <span id="data"></span>
-        <img class="info-icon" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Clock_font_awesome.svg/512px-Clock_font_awesome.svg.png" alt="Relógio">
-        <span id="hora"></span>
+        <span>📅 <span id="data"></span></span>
+        <span>⏰ <span id="hora"></span></span>
     </div>
 
     <button class="theme-toggle" id="themeToggle">☀️</button>
