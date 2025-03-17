@@ -57,15 +57,17 @@
             left: 10px;
             display: flex;
             flex-direction: column;
-            width: 180px; /* Largura fixa para unir os blocos */
-            border: 1px solid #000; /* Cria a sensação de uma bandeira unificada */
+            width: 180px; /* Largura fixa para manter consistência */
+            border: 1px solid #000; /* Delimita como bandeira única */
         }
         .list {
             display: flex;
             align-items: center;
+            justify-content: space-between; /* Ajusta alinhamento horizontal */
             padding: 5px 10px;
             font-size: 14px;
-            color: #000000; /* Texto preto para todas as listas */
+            color: #000000; /* Texto preto */
+            height: 40px; /* Altura fixa igual para ambas */
         }
         .list-blue {
             background-color: #0057B7; /* Azul para a Ucrânia */
@@ -133,12 +135,12 @@
     <div class="lists-container">
         <!-- Lista azul para a Ucrânia -->
         <div class="list list-blue">
-            🇺🇦 📅 <span id="data-ucrania"></span> ⏰ <span id="hora-ucrania"></span>
+            🇺🇦 <span>📅 <span id="data-ucrania"></span> ⏰ <span id="hora-ucrania"></span></span>
         </div>
 
         <!-- Lista amarela para o Brasil -->
         <div class="list list-yellow">
-            🇧🇷 📅 <span id="data-brasil"></span> ⏰ <span id="hora-brasil"></span>
+            🇧🇷 <span>📅 <span id="data-brasil"></span> ⏰ <span id="hora-brasil"></span></span>
         </div>
     </div>
 
