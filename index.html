@@ -17,72 +17,31 @@
             margin: 20px auto;
             border-collapse: collapse;
             background-color: #1f1f1f; /* Fundo da tabela no modo escuro */
-            transition: background-color 0.3s;
         }
         th, td {
-            border: 1px solid #444; /* Borda em modo escuro */
+            border: 1px solid #444;
             padding: 8px;
             text-align: left;
         }
-        th:first-child, .moeda {
+        th:first-child {
             background-color: #003d7a; /* Azul escuro */
-            color: white; /* Texto branco */
+            color: white;
         }
-        th:last-child, .valor {
+        th:last-child {
             background-color: #ccac00; /* Amarelo escuro */
-            color: black; /* Texto preto */
+            color: black;
         }
-        .usd, .eur, .gbp, .btc, .eth, .ltc, .xmr, .ton {
-            background-color: #003d7a; /* Azul escuro para os nomes */
-            color: white; /* Texto branco */
+        .moeda {
+            background-color: #003d7a; /* Azul escuro */
+            color: white;
         }
-        .valor-usd, .valor-eur, .valor-gbp, .valor-btc, .valor-eth, .valor-ltc, .valor-xmr, .valor-ton {
-            background-color: #ccac00; /* Amarelo escuro para os valores */
-            color: black; /* Texto preto */
-        }
-        .flag {
-            position: absolute;
-            top: 10px;
-            width: 50px;
-            height: 30px;
-            background: linear-gradient(to bottom, #0057B7 50%, #FFD700 50%);
-            border: 1px solid #000;
-        }
-        .flag-left {
-            left: 10px;
-        }
-        .flag-right {
-            right: 10px;
-        }
-        .toggle-theme {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            width: 40px;
-            height: 40px;
-            background-color: #1f1f1f;
-            border: none;
-            border-radius: 50%;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-        .toggle-theme:hover {
-            background-color: #444;
-            transform: scale(1.1);
-        }
-        .toggle-theme img {
-            width: 20px;
-            height: 20px;
+        .valor {
+            background-color: #ccac00; /* Amarelo escuro */
+            color: black;
         }
     </style>
 </head>
 <body>
-    <div class="flag flag-left"></div> <!-- Bandeira no canto superior esquerdo -->
-    <div class="flag flag-right"></div> <!-- Bandeira no canto superior direito -->
     <table id="cotacoes">
         <thead>
             <tr>
@@ -92,84 +51,63 @@
         </thead>
         <tbody>
             <tr>
-                <td class="usd">Dólar (USD)</td>
-                <td class="valor-usd" id="usd">Carregando...</td>
+                <td class="moeda">Dólar (USD)</td>
+                <td class="valor" id="usd">Carregando...</td>
             </tr>
             <tr>
-                <td class="eur">Euro (EUR)</td>
-                <td class="valor-eur" id="eur">Carregando...</td>
+                <td class="moeda">Euro (EUR)</td>
+                <td class="valor" id="eur">Carregando...</td>
             </tr>
             <tr>
-                <td class="gbp">Libra (GBP)</td>
-                <td class="valor-gbp" id="gbp">Carregando...</td>
+                <td class="moeda">Libra (GBP)</td>
+                <td class="valor" id="gbp">Carregando...</td>
             </tr>
             <tr>
-                <td class="btc">Bitcoin (BTC)</td>
-                <td class="valor-btc" id="btc">Carregando...</td>
+                <td class="moeda">Bitcoin (BTC)</td>
+                <td class="valor" id="btc">Carregando...</td>
             </tr>
             <tr>
-                <td class="eth">Ethereum (ETH)</td>
-                <td class="valor-eth" id="eth">Carregando...</td>
+                <td class="moeda">Ethereum (ETH)</td>
+                <td class="valor" id="eth">Carregando...</td>
             </tr>
             <tr>
-                <td class="ltc">Litecoin (LTC)</td>
-                <td class="valor-ltc" id="ltc">Carregando...</td>
+                <td class="moeda">Litecoin (LTC)</td>
+                <td class="valor" id="ltc">Carregando...</td>
             </tr>
             <tr>
-                <td class="xmr">Monero (XMR)</td>
-                <td class="valor-xmr" id="xmr">Carregando...</td>
+                <td class="moeda">Monero (XMR)</td>
+                <td class="valor" id="xmr">Carregando...</td>
             </tr>
             <tr>
-                <td class="ton">Toncoin (TON)</td>
-                <td class="valor-ton" id="ton">Carregando...</td>
+                <td class="moeda">Toncoin (TON)</td>
+                <td class="valor" id="ton">Carregando...</td>
             </tr>
         </tbody>
     </table>
 
-    <button class="toggle-theme" onclick="toggleTheme()">
-        <img src="https://cdn-icons-png.flaticon.com/512/169/169367.png" alt="Alternar Tema">
-    </button>
-
     <script>
-        function toggleTheme() {
-            const body = document.body;
-            body.classList.toggle('light-mode');
-            
-            if (body.classList.contains('light-mode')) {
-                body.style.backgroundColor = '#ffffff';
-                body.style.color = '#000000';
-                document.querySelectorAll('table').forEach(table => {
-                    table.style.backgroundColor = '#f9f9f9';
-                });
-            } else {
-                body.style.backgroundColor = '#121212';
-                body.style.color = '#ffffff';
-                document.querySelectorAll('table').forEach(table => {
-                    table.style.backgroundColor = '#1f1f1f';
-                });
-            }
-        }
-
         async function fetchCotacoes() {
             try {
-                const res = await fetch('https://api.bcb.gov.br/dados/serie/bcdata.sgs.21619/dados?formato=json'); // Exemplo de API alternativa
-                if (!res.ok) {
-                    throw new Error(`Erro ao acessar a API: ${res.status}`);
-                }
-                
-                const data = await res.json();
+                // API para moedas tradicionais (Euro e Libra)
+                const resForex = await fetch('https://api.frankfurter.dev/latest?from=USD&to=BRL,EUR,GBP');
+                const forexData = await resForex.json();
 
-                document.getElementById('usd').innerText = data.usd?.brl?.toFixed(2) || "N/A";
-                document.getElementById('eur').innerText = data.eur?.brl?.toFixed(2) || "N/A";
-                document.getElementById('gbp').innerText = data.gbp?.brl?.toFixed(2) || "N/A";
-                document.getElementById('btc').innerText = data.bitcoin?.brl?.toFixed(2) || "N/A";
-                document.getElementById('eth').innerText = data.ethereum?.brl?.toFixed(2) || "N/A";
-                document.getElementById('ltc').innerText = data.litecoin?.brl?.toFixed(2) || "N/A";
-                document.getElementById('xmr').innerText = data.monero?.brl?.toFixed(2) || "N/A";
-                document.getElementById('ton').innerText = data.toncoin?.brl?.toFixed(2) || "N/A";
+                // API para criptomoedas (Toncoin e outras)
+                const resCrypto = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=usd,bitcoin,ethereum,litecoin,monero,toncoin&vs_currencies=brl');
+                const cryptoData = await resCrypto.json();
+
+                // Atualizando valores na tabela
+                document.getElementById('usd').innerText = forexData.rates.BRL.toFixed(2);
+                document.getElementById('eur').innerText = (forexData.rates.EUR * forexData.rates.BRL).toFixed(2);
+                document.getElementById('gbp').innerText = (forexData.rates.GBP * forexData.rates.BRL).toFixed(2);
+                document.getElementById('btc').innerText = cryptoData.bitcoin.brl.toFixed(2);
+                document.getElementById('eth').innerText = cryptoData.ethereum.brl.toFixed(2);
+                document.getElementById('ltc').innerText = cryptoData.litecoin.brl.toFixed(2);
+                document.getElementById('xmr').innerText = cryptoData.monero.brl.toFixed(2);
+                document.getElementById('ton').innerText = cryptoData.toncoin.brl.toFixed(2);
             } catch (error) {
                 console.error('Erro ao buscar cotações:', error);
-                document.querySelectorAll('td[id]').forEach(td => td.innerText = "Erro");
+                document.querySelectorAll('td[id]').forEach(td => td.innerText = 'Erro');
             }
         }
 
