@@ -23,27 +23,24 @@
             padding: 8px;
             text-align: left;
         }
-        th:first-child, .moeda { /* Cor azul mais leve para "Moeda" */
+        th:first-child, .moeda { /* Cor azul para "Moeda" */
             background-color: #0057B7;
-            color: #ffffff; /* Texto branco */
-            font-weight: 600; /* Peso médio */
+            color: #ffffff;
         }
-        th:last-child, .valor { /* Cor amarela mais leve para "Valor" */
+        th:last-child, .valor { /* Cor amarela para "Valor (BRL)" */
             background-color: #FFD700;
-            color: #000000; /* Texto preto */
-            font-weight: 600; /* Peso médio */
+            color: #000000;
         }
         td.moeda {
-            color: #0057B7; /* Azul moderado para "Moeda" */
-            font-weight: 500; /* Peso mais leve */
+            color: #0057B7; /* Azul mais forte para "Moeda" */
+            font-weight: bold;
         }
         td.valor {
-            color: #FFD700; /* Amarelo moderado para "Valor" */
-            font-weight: 500; /* Peso mais leve */
+            color: #FFD700; /* Amarelo mais forte para "Valor" */
+            font-weight: bold;
         }
         tbody td {
-            color: #555555; /* Cinza médio para maior visibilidade */
-            font-weight: 400; /* Fonte leve, clara e elegante */
+            color: #333333; /* Cinza escuro para os valores */
         }
         .flag {
             position: absolute;
@@ -120,26 +117,27 @@
     <button class="theme-toggle" id="themeToggle">☀️</button>
 
     <script>
-        // Função para formatar valores
+        // Função para formatar valores em BRL
         function formatarBRL(valor) {
             if (valor > 1000) {
-                return `R$${valor.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}`; // Remove casas decimais para valores > 1000
+                return `R$${valor.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}`;
             } else {
-                return `R$${valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`; // Mantém 2 casas para valores <= 1000
+                return `R$${valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
             }
         }
 
         async function fetchCotacoes() {
             try {
+                // Conexão com a API CoinGecko
                 const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=usd,bitcoin,ethereum,litecoin,monero&vs_currencies=brl');
                 const data = await res.json();
 
                 // Atualizando os valores na tabela
-                document.getElementById('usd').innerText = formatarBRL(data.usd.brl); // Dólar com casas decimais
-                document.getElementById('btc').innerText = formatarBRL(data.bitcoin.brl); // Bitcoin sem casas decimais
-                document.getElementById('eth').innerText = formatarBRL(data.ethereum.brl); // Ethereum sem casas decimais
-                document.getElementById('ltc').innerText = formatarBRL(data.litecoin.brl); // Litecoin com casas decimais
-                document.getElementById('xmr').innerText = formatarBRL(data.monero.brl); // Monero sem casas decimais
+                document.getElementById('usd').innerText = formatarBRL(data.usd.brl);
+                document.getElementById('btc').innerText = formatarBRL(data.bitcoin.brl);
+                document.getElementById('eth').innerText = formatarBRL(data.ethereum.brl);
+                document.getElementById('ltc').innerText = formatarBRL(data.litecoin.brl);
+                document.getElementById('xmr').innerText = formatarBRL(data.monero.brl);
             } catch (error) {
                 console.error('Erro ao buscar cotações:', error);
                 document.querySelectorAll('td[id]').forEach(td => td.innerText = 'Erro');
@@ -149,6 +147,7 @@
         fetchCotacoes();
         setInterval(fetchCotacoes, 60000); // Atualiza a cada 60 segundos
 
+        // Alternância de tema (claro e escuro)
         const themeToggle = document.getElementById('themeToggle');
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('light');
