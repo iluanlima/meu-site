@@ -179,24 +179,21 @@
             const valorElement = document.getElementById(moeda);
             const variacaoElement = document.getElementById(`${moeda}-var`);
 
-            // Calcula o valor absoluto da variação e o formata
-            const variacaoAbs = `R$${(valor * Math.abs(variacao) / 100).toFixed(2)}`;
+            // Formatar o valor com pontos em vez de vírgulas
+            const valorFormatado = `R$${valor.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).replace(',', '.')}`; // Substituir ',' por '.'
 
-            // Formata o valor da moeda
-            if (formatarSimples) {
-                valorElement.innerText = `R$ ${valor.toFixed(2)}`;
-            } else {
-                valorElement.innerText = `R$ ${(valor / 1000).toLocaleString('pt-BR', { minimumFractionDigits: 0 })}`;
-            }
+            valorElement.innerText = valorFormatado;
 
-            // Formata a variação com setas e valor absoluto
             variacaoElement.className = 'variacao';
             if (variacao >= 0) {
                 variacaoElement.classList.add('variacao-positiva');
-                variacaoElement.innerText = `▲ +${variacao.toFixed(2)}% (${variacaoAbs})`;
+                variacaoElement.innerText = `▲ +${variacao.toFixed(2)}%`;
             } else {
                 variacaoElement.classList.add('variacao-negativa');
-                variacaoElement.innerText = `▼ ${variacao.toFixed(2)}% (${variacaoAbs})`;
+                variacaoElement.innerText = `▼ ${variacao.toFixed(2)}%`;
             }
         }
 
@@ -215,11 +212,17 @@
             document.getElementById('data-ucrania').innerText = dataUcrania;
             document.getElementById('hora-ucrania').innerText = horaUcrania;
         }
+
         // Função para buscar as cotações e configurar os intervalos
+                // Função para buscar as cotações e configurar os intervalos
         fetchCotacoes();
-        setInterval(fetchCotacoes, 60000); // Atualiza as cotações a cada 60 segundos
-        setInterval(atualizarDataHora, 1000); // Atualiza data e hora a cada segundo
         atualizarDataHora();
+
+        // Atualiza as cotações a cada 60 segundos
+        setInterval(fetchCotacoes, 60000);
+
+        // Atualiza data e hora a cada segundo
+        setInterval(atualizarDataHora, 1000);
 
         // Alterna entre os temas claro e escuro
         const themeToggle = document.getElementById('themeToggle');
