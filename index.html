@@ -28,11 +28,11 @@
             background-color: #FFD700; /* Amarelo */
             color: black; /* Texto preto */
         }
-        .usd, .btc, .ltc, .xmr {
-            background-color: #0057B7; /* Azul para os nomes das moedas */
+        .usd, .eur, .gbp, .btc, .ltc, .xmr {
+            background-color: #0057B7; /* Azul para os nomes */
             color: white; /* Texto branco */
         }
-        .valor-usd, .valor-btc, .valor-ltc, .valor-xmr {
+        .valor-usd, .valor-eur, .valor-gbp, .valor-btc, .valor-ltc, .valor-xmr {
             background-color: #FFD700; /* Amarelo para os valores */
             color: black; /* Texto preto */
         }
@@ -68,6 +68,14 @@
                 <td class="valor-usd" id="usd">Carregando...</td>
             </tr>
             <tr>
+                <td class="eur">Euro (EUR)</td>
+                <td class="valor-eur" id="eur">Carregando...</td>
+            </tr>
+            <tr>
+                <td class="gbp">Libra (GBP)</td>
+                <td class="valor-gbp" id="gbp">Carregando...</td>
+            </tr>
+            <tr>
                 <td class="btc">Bitcoin (BTC)</td>
                 <td class="valor-btc" id="btc">Carregando...</td>
             </tr>
@@ -85,10 +93,12 @@
     <script>
         async function fetchCotacoes() {
             try {
-                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=usd,bitcoin,litecoin,monero&vs_currencies=brl');
+                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=usd,eur,gbp,bitcoin,litecoin,monero&vs_currencies=brl');
                 const data = await res.json();
                 
                 document.getElementById('usd').innerText = data.usd.brl.toFixed(2);
+                document.getElementById('eur').innerText = data.eur.brl.toFixed(2);
+                document.getElementById('gbp').innerText = data.gbp.brl.toFixed(2);
                 document.getElementById('btc').innerText = Math.floor(data.bitcoin.brl);
                 document.getElementById('ltc').innerText = data.litecoin.brl.toFixed(2);
                 document.getElementById('xmr').innerText = data.monero.brl.toFixed(2);
