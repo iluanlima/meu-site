@@ -57,23 +57,27 @@
             left: 10px;
             display: flex;
             flex-direction: column;
-            width: 180px; /* Largura fixa para manter consistência */
-            border: 1px solid #000; /* Delimita como bandeira única */
+            gap: 5px;
         }
         .list {
             display: flex;
             align-items: center;
-            justify-content: space-between; /* Ajusta alinhamento horizontal */
             padding: 5px 10px;
             font-size: 14px;
-            color: #000000; /* Texto preto */
-            height: 40px; /* Altura fixa igual para ambas */
+            color: inherit; /* Herdar a cor conforme o tema */
+            transition: color 0.3s;
         }
         .list-blue {
             background-color: #0057B7; /* Azul para a Ucrânia */
         }
         .list-yellow {
             background-color: #FFD700; /* Amarelo para o Brasil */
+        }
+        .theme-light .list {
+            color: #000000; /* Fonte preta no modo diurno */
+        }
+        .theme-dark .list {
+            color: #ffffff; /* Fonte branca no modo noturno */
         }
         .theme-toggle {
             position: fixed;
@@ -98,7 +102,7 @@
         }
     </style>
 </head>
-<body>
+<body class="theme-dark">
     <div class="container">
         <table id="cotacoes">
             <thead>
@@ -135,12 +139,12 @@
     <div class="lists-container">
         <!-- Lista azul para a Ucrânia -->
         <div class="list list-blue">
-            🇺🇦 <span>📅 <span id="data-ucrania"></span> ⏰ <span id="hora-ucrania"></span></span>
+            🇺🇦 📅 <span id="data-ucrania"></span> ⏰ <span id="hora-ucrania"></span>
         </div>
 
         <!-- Lista amarela para o Brasil -->
         <div class="list list-yellow">
-            🇧🇷 <span>📅 <span id="data-brasil"></span> ⏰ <span id="hora-brasil"></span></span>
+            🇧🇷 📅 <span id="data-brasil"></span> ⏰ <span id="hora-brasil"></span>
         </div>
     </div>
 
@@ -205,10 +209,10 @@
 
         const themeToggle = document.getElementById('themeToggle');
         themeToggle.addEventListener('click', () => {
-            const isDark = document.body.classList.toggle('light');
-            document.body.style.backgroundColor = isDark ? '#FFFFFF' : '#2B2B2B';
-            document.body.style.color = isDark ? '#000000' : '#FFFFFF';
-            themeToggle.innerHTML = isDark ? '🌞' : '🌙';
+            const body = document.body;
+            body.classList.toggle('theme-light');
+            body.classList.toggle('theme-dark');
+            themeToggle.innerHTML = body.classList.contains('theme-light') ? '🌞' : '🌙';
         });
     </script>
 </body>
