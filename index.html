@@ -14,16 +14,17 @@
         }
         .container {
             position: relative;
-            margin-top: 10px; /* Move a tabela bem para cima */
+            margin-top: 0; /* Posiciona a tabela no topo */
         }
         table {
-            width: 100%; /* Estende a tabela para cobrir os lados */
+            width: 90%; /* Mantém a tabela centralizada horizontalmente */
             margin: 0 auto;
             border-collapse: collapse;
             background-color: white;
+            border: 3px solid white; /* Bordas brancas e visíveis */
         }
         th, td {
-            border: 1px solid #ddd;
+            border: 1px solid white; /* Bordas das células visíveis e brancas */
             padding: 8px;
             text-align: left;
         }
@@ -50,7 +51,7 @@
             margin-top: 10px; /* Espaço entre a tabela e as bandeiras */
         }
         .flag {
-            width: 80px; /* Aumenta o tamanho das bandeiras para maior visibilidade */
+            width: 80px; /* Aumenta o tamanho das bandeiras */
             height: 50px;
             background: linear-gradient(to bottom, #0057B7 50%, #FFD700 50%);
             border: 1px solid #000;
