@@ -22,7 +22,8 @@
             border-collapse: separate;
             border-spacing: 0;
             background-color: white;
-            border: 1px solid white;
+            border: 1px solid white; /* Bordas brancas no modo noturno */
+            transition: border-color 0.3s;
         }
         th, td {
             width: 50%;
@@ -30,6 +31,7 @@
             text-align: left;
             box-sizing: border-box;
             border: 0.5px solid white; /* Bordas extremamente finas */
+            transition: border-color 0.3s;
         }
         td + td, th + th {
             border-left: 0.5px solid white;
@@ -50,6 +52,12 @@
         td.valor {
             background-color: #FFD700;
             color: black;
+        }
+        .theme-light table {
+            border: 1px solid black; /* Bordas pretas no modo diurno */
+        }
+        .theme-light th, .theme-light td {
+            border: 0.5px solid black; /* Bordas internas pretas */
         }
         .info-container {
             position: fixed;
