@@ -14,11 +14,11 @@
         }
         .container {
             position: relative;
-            margin-top: 60px; /* Move a tabela para baixo */
+            margin-top: 20px; /* Move a tabela mais para cima */
         }
         table {
             width: 100%; /* Estende a tabela para cobrir os lados */
-            margin: 20px 0;
+            margin: 0 auto;
             border-collapse: collapse;
             background-color: white;
         }
@@ -44,19 +44,16 @@
             background-color: #FFD700;
             color: black;
         }
+        .flags-below {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px; /* Espaço entre a tabela e as bandeiras */
+        }
         .flag {
-            position: absolute;
-            top: -40px; /* Coloca as bandeiras acima da tabela */
-            width: 60px; /* Ajusta o tamanho das bandeiras para maior visibilidade */
+            width: 60px; /* Ajusta o tamanho das bandeiras */
             height: 40px;
             background: linear-gradient(to bottom, #0057B7 50%, #FFD700 50%);
             border: 1px solid #000;
-        }
-        .flag-left {
-            left: 10px;
-        }
-        .flag-right {
-            right: 10px;
         }
         .theme-toggle {
             position: fixed;
@@ -98,8 +95,6 @@
 </head>
 <body>
     <div class="container">
-        <div class="flag flag-left"></div>
-        <div class="flag flag-right"></div>
         <table id="cotacoes">
             <thead>
                 <tr>
@@ -130,6 +125,10 @@
                 </tr>
             </tbody>
         </table>
+        <div class="flags-below">
+            <div class="flag"></div>
+            <div class="flag"></div>
+        </div>
     </div>
 
     <div class="info-bottom-left">
