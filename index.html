@@ -76,14 +76,13 @@
             background-color: #2B2B2B;
             color: #FFD700;
         }
-        .info-bottom-right {
+        .info-bottom-left {
             position: fixed;
             bottom: 10px;
-            right: 10px;
+            left: 10px;
             font-size: 14px;
             display: flex;
             flex-direction: column;
-            align-items: flex-end;
             gap: 5px;
         }
         .info-line {
@@ -127,10 +126,12 @@
         </tbody>
     </table>
 
-    <div class="info-bottom-right">
+    <div class="info-bottom-left">
         <div class="info-line">🇧🇷 📅 <span id="data-brasil"></span> ⏰ <span id="hora-brasil"></span></div>
         <div class="info-line">🇺🇦 📅 <span id="data-ucrania"></span> ⏰ <span id="hora-ucrania"></span></div>
     </div>
+
+    <button class="theme-toggle" id="themeToggle">🌙</button>
 
     <script>
         function formatarBRL(valor) {
@@ -175,6 +176,14 @@
         setInterval(fetchCotacoes, 60000);
         setInterval(atualizarDataHora, 1000);
         atualizarDataHora();
+
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.body.classList.toggle('light');
+            document.body.style.backgroundColor = isDark ? '#FFFFFF' : '#2B2B2B';
+            document.body.style.color = isDark ? '#000000' : '#FFFFFF';
+            themeToggle.innerHTML = isDark ? '🌞' : '🌙';
+        });
     </script>
 </body>
 </html>
