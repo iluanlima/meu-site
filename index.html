@@ -8,108 +8,96 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #121212; /* Modo escuro padrão */
-            color: #ffffff; /* Texto padrão para modo escuro */
-            transition: background-color 0.3s, color 0.3s;
         }
         table {
             width: 90%;
             margin: 20px auto;
             border-collapse: collapse;
-            background-color: #1f1f1f; /* Fundo da tabela no modo escuro */
+            background-color: white;
         }
         th, td {
-            border: 1px solid #444;
+            border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
         }
         th:first-child {
-            background-color: #003d7a; /* Azul escuro */
-            color: white;
+            background-color: #0057B7; /* Azul (cor da bandeira da Ucrânia) */
+            color: white; /* Texto branco para contraste */
         }
         th:last-child {
-            background-color: #ccac00; /* Amarelo escuro */
-            color: black;
+            background-color: #FFD700; /* Amarelo (cor da bandeira da Ucrânia) */
+            color: black; /* Texto preto para contraste */
         }
-        .moeda {
-            background-color: #003d7a; /* Azul escuro */
-            color: white;
+        .usd {
+            color: green;
         }
-        .valor {
-            background-color: #ccac00; /* Amarelo escuro */
-            color: black;
+        .btc {
+            color: orange;
+        }
+        .ltc {
+            color: silver;
+        }
+        .xmr {
+            color: red;
+        }
+        .flag {
+            position: absolute;
+            top: 10px;
+            width: 50px;
+            height: 30px;
+            background: linear-gradient(to bottom, #0057B7 50%, #FFD700 50%);
+            border: 1px solid #000;
+        }
+        .flag-left {
+            left: 10px; /* Bandeira no canto superior esquerdo */
+        }
+        .flag-right {
+            right: 10px; /* Bandeira no canto superior direito */
         }
     </style>
 </head>
 <body>
+    <div class="flag flag-left"></div> <!-- Bandeira da Ucrânia no canto superior esquerdo -->
+    <div class="flag flag-right"></div> <!-- Bandeira da Ucrânia no canto superior direito -->
     <table id="cotacoes">
         <thead>
             <tr>
-                <th class="moeda">Moeda:</th>
-                <th class="valor">Valor (BRL):</th>
+                <th>Moeda</th>
+                <th>Valor (BRL)</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td class="moeda">Dólar (USD)</td>
-                <td class="valor" id="usd">Carregando...</td>
+                <td class="usd">Dólar (USD)</td>
+                <td id="usd">Carregando...</td>
             </tr>
             <tr>
-                <td class="moeda">Euro (EUR)</td>
-                <td class="valor" id="eur">Carregando...</td>
+                <td class="btc">Bitcoin (BTC)</td>
+                <td id="btc">Carregando...</td>
             </tr>
             <tr>
-                <td class="moeda">Bitcoin (BTC)</td>
-                <td class="valor" id="btc">Carregando...</td>
+                <td class="ltc">Litecoin (LTC)</td>
+                <td id="ltc">Carregando...</td>
             </tr>
             <tr>
-                <td class="moeda">Ethereum (ETH)</td>
-                <td class="valor" id="eth">Carregando...</td>
-            </tr>
-            <tr>
-                <td class="moeda">Litecoin (LTC)</td>
-                <td class="valor" id="ltc">Carregando...</td>
-            </tr>
-            <tr>
-                <td class="moeda">Monero (XMR)</td>
-                <td class="valor" id="xmr">Carregando...</td>
+                <td class="xmr">Monero (XMR)</td>
+                <td id="xmr">Carregando...</td>
             </tr>
         </tbody>
     </table>
 
     <script>
         async function fetchCotacoes() {
-            const apiKey = 'f90dca9d-fd4e-4aba-807a-32364f238cee'; // Substitua pela sua chave de API CoinMarketCap
-            const url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest';
-
-            // Moedas para buscar
-            const symbols = ['USD', 'EUR', 'BTC', 'ETH', 'LTC', 'XMR'];
-
             try {
-                // Criando o parâmetro `symbol` com as moedas solicitadas
-                const symbolsParam = symbols.join(',');
-
-                // Fazendo requisição à API CoinMarketCap
-                const response = await fetch(`${url}?symbol=${symbolsParam}&convert=BRL`, {
-                    method: 'GET',
-                    headers: {
-                        'X-CMC_PRO_API_KEY': apiKey
-                    }
-                });
-
-                const data = await response.json();
-
-                // Atualizando valores na tabela
-                document.getElementById('usd').innerText = data.data.USD.quote.BRL.price.toFixed(2);
-                document.getElementById('eur').innerText = data.data.EUR.quote.BRL.price.toFixed(2);
-                document.getElementById('btc').innerText = data.data.BTC.quote.BRL.price.toFixed(2);
-                document.getElementById('eth').innerText = data.data.ETH.quote.BRL.price.toFixed(2);
-                document.getElementById('ltc').innerText = data.data.LTC.quote.BRL.price.toFixed(2);
-                document.getElementById('xmr').innerText = data.data.XMR.quote.BRL.price.toFixed(2);
+                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=usd,bitcoin,litecoin,monero&vs_currencies=brl');
+                const data = await res.json();
+                
+                document.getElementById('usd').innerText = data.usd.brl.toFixed(2);
+                document.getElementById('btc').innerText = Math.floor(data.bitcoin.brl);
+                document.getElementById('ltc').innerText = data.litecoin.brl.toFixed(2);
+                document.getElementById('xmr').innerText = data.monero.brl.toFixed(2);
             } catch (error) {
                 console.error('Erro ao buscar cotações:', error);
-                // Mostrando "Erro" em caso de falha
-                document.querySelectorAll('td[id]').forEach(td => td.innerText = 'Erro');
             }
         }
 
