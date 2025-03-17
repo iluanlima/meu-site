@@ -8,7 +8,7 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #2B2B2B;
+            background-color: #2B2B2B; /* Tema escuro por padrão */
             color: #ffffff;
             transition: background-color 0.3s, color 0.3s;
         }
@@ -160,11 +160,24 @@
         function atualizarDataHora() {
             const agora = new Date();
 
-            const dataBrasil = agora.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-            const horaBrasil = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            // Formatar data com pontos (dd.mm.aaaa)
+            const dataFormatada = (data) => {
+                const dia = String(data.getDate()).padStart(2, '0');
+                const mes = String(data.getMonth() + 1).padStart(2, '0');
+                const ano = data.getFullYear();
+                return `${dia}.${mes}.${ano}`;
+            };
 
-            const dataUcrania = agora.toLocaleDateString('uk-UA', { day: '2-digit', month: '2-digit', year: 'numeric' });
-            const horaUcrania = agora.toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Kiev' });
+            const horaFormatada = (hora) => hora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+            // Data e hora do Brasil
+            const dataBrasil = dataFormatada(agora);
+            const horaBrasil = horaFormatada(agora);
+
+            // Data e hora da Ucrânia
+            const opcoesKiev = { timeZone: 'Europe/Kiev' };
+            const dataUcrania = dataFormatada(new Date(new Date().toLocaleString('en-US', opcoesKiev)));
+            const horaUcrania = new Date().toLocaleTimeString('en-US', { ...opcoesKiev, hour: '2-digit', minute: '2-digit' });
 
             document.getElementById('data-brasil').innerText = dataBrasil;
             document.getElementById('hora-brasil').innerText = horaBrasil;
@@ -173,8 +186,8 @@
         }
 
         fetchCotacoes();
-        setInterval(fetchCotacoes, 60000);
-        setInterval(atualizarDataHora, 1000);
+        setInterval(fetchCotacoes, 60000); // Atualiza as cotações a cada 60 segundos
+        setInterval(atualizarDataHora, 1000); // Atualiza data e hora a cada segundo
         atualizarDataHora();
 
         const themeToggle = document.getElementById('themeToggle');
