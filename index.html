@@ -17,23 +17,21 @@
             margin-top: 0;
         }
         table {
-            width: 100%; /* Ocupa toda a largura da tela */
+            width: 100%;
             margin: 0 auto;
-            border-collapse: separate; /* Para bordas separadas */
-            border-spacing: 0; /* Remove espaços entre células */
+            border-collapse: separate;
+            border-spacing: 0;
             background-color: white;
-            border: 1px solid white; /* Bordas externas principais */
+            border: 1px solid white;
         }
         th, td {
-            width: 50%; /* Cada coluna ocupa 50% */
+            width: 50%;
             padding: 8px;
             text-align: left;
             box-sizing: border-box;
-        }
-        th, td {
             border: 0.5px solid white; /* Bordas extremamente finas */
         }
-        td + td, th + th { /* Borda fina no meio */
+        td + td, th + th {
             border-left: 0.5px solid white;
         }
         th {
@@ -53,26 +51,42 @@
             background-color: #FFD700;
             color: black;
         }
-        .flag-wide {
-            position: fixed; /* Fixa a bandeira na posição */
-            bottom: 0; /* Move para o canto inferior da tela */
-            left: 0;
-            width: 100%; /* Preenche 100% da largura */
-            height: 75px; /* Altura fixa */
+        .flag-small {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            width: 50px; /* Tamanho pequeno da bandeira */
+            height: 30px;
             background: linear-gradient(to bottom, #0057B7 50%, #FFD700 50%);
             border: 1px solid #000;
-            z-index: -1; /* Garante que fique abaixo dos outros elementos */
+        }
+        .info-in-flag {
+            position: fixed;
+            bottom: 10px;
+            left: 70px; /* Posicionado ao lado da bandeira */
+            display: flex;
+            flex-direction: column;
+            font-size: 14px;
+            color: black; /* Texto escuro para maior contraste */
+        }
+        .info-line {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(to bottom, #0057B7 50%, #FFD700 50%);
+            padding: 5px;
+            border-radius: 5px;
+            gap: 5px;
         }
         .theme-toggle {
             position: fixed;
-            bottom: 90px; /* Fica acima da bandeira */
+            bottom: 10px;
             right: 10px;
             width: 50px;
             height: 50px;
             border: none;
             border-radius: 25px;
-            background-color: #FFD700;
-            color: #000;
+            background-color: #A9A9A9; /* Bola acinzentada */
+            color: yellow; /* Emojis amarelos */
             font-size: 20px;
             display: flex;
             align-items: center;
@@ -82,22 +96,7 @@
             transition: background-color 0.3s, color 0.3s;
         }
         .theme-toggle.dark {
-            background-color: #2B2B2B;
-            color: #FFD700;
-        }
-        .info-bottom-left {
-            position: fixed;
-            bottom: 90px; /* Fica acima da bandeira */
-            left: 10px;
-            font-size: 14px;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-        .info-line {
-            display: flex;
-            align-items: center;
-            gap: 5px;
+            background-color: #696969; /* Tom de cinza mais escuro */
         }
     </style>
 </head>
@@ -133,10 +132,11 @@
                 </tr>
             </tbody>
         </table>
-        <div class="flag-wide"></div> <!-- Bandeira única larga -->
     </div>
 
-    <div class="info-bottom-left">
+    <div class="flag-small"></div> <!-- Bandeira pequena no canto inferior esquerdo -->
+
+    <div class="info-in-flag">
         <div class="info-line">🇧🇷 📅 <span id="data-brasil"></span> ⏰ <span id="hora-brasil"></span></div>
         <div class="info-line">🇺🇦 📅 <span id="data-ucrania"></span> ⏰ <span id="hora-ucrania"></span></div>
     </div>
