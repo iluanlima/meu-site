@@ -152,7 +152,7 @@
 
         async function fetchCotacoes() {
             try {
-                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=usd,eur,gbp,bitcoin,ethereum,litecoin,monero,toncoin&vs_currencies=brl');
+                const res = await fetch('https://api.bcb.gov.br/dados/serie/bcdata.sgs.21619/dados?formato=json'); // Exemplo de API alternativa
                 if (!res.ok) {
                     throw new Error(`Erro ao acessar a API: ${res.status}`);
                 }
