@@ -8,36 +8,34 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: white;
-            color: black;
-            transition: background-color 0.3s, color 0.3s;
+            background-color: #121212; /* Fundo padrão modo escuro */
+            color: #ffffff; /* Texto branco padrão */
         }
         table {
             width: 90%;
             margin: 20px auto;
             border-collapse: collapse;
-            background-color: white;
-            transition: background-color 0.3s;
+            background-color: #1f1f1f; /* Fundo da tabela modo escuro */
         }
         th, td {
-            border: 1px solid #ddd;
+            border: 1px solid #444; /* Borda em modo escuro */
             padding: 8px;
             text-align: left;
         }
         th:first-child, .moeda {
-            background-color: #0057B7; /* Azul */
+            background-color: #003d7a; /* Azul escuro */
             color: white; /* Texto branco */
         }
         th:last-child, .valor {
-            background-color: #FFD700; /* Amarelo */
+            background-color: #ccac00; /* Amarelo escuro */
             color: black; /* Texto preto */
         }
         .usd, .eur, .gbp, .btc, .eth, .ltc, .xmr, .ton {
-            background-color: #0057B7; /* Azul para os nomes */
+            background-color: #003d7a; /* Azul escuro para os nomes */
             color: white; /* Texto branco */
         }
         .valor-usd, .valor-eur, .valor-gbp, .valor-btc, .valor-eth, .valor-ltc, .valor-xmr, .valor-ton {
-            background-color: #FFD700; /* Amarelo para os valores */
+            background-color: #ccac00; /* Amarelo escuro para os valores */
             color: black; /* Texto preto */
         }
         .flag {
@@ -54,30 +52,16 @@
         .flag-right {
             right: 10px;
         }
-        .dark-mode {
-            background-color: #121212;
-            color: #ffffff;
-        }
-        .dark-mode table {
-            background-color: #1f1f1f;
-        }
-        .dark-mode th:first-child, .dark-mode .moeda {
-            background-color: #003d7a; /* Azul escuro */
-        }
-        .dark-mode th:last-child, .dark-mode .valor {
-            background-color: #ccac00; /* Amarelo escuro */
-        }
     </style>
 </head>
 <body>
     <div class="flag flag-left"></div> <!-- Bandeira no canto superior esquerdo -->
     <div class="flag flag-right"></div> <!-- Bandeira no canto superior direito -->
-    <button onclick="toggleDarkMode()" style="margin: 20px;">Alternar Modo Escuro</button>
     <table id="cotacoes">
         <thead>
             <tr>
-                <th class="moeda">Moeda</th>
-                <th class="valor">Valor (BRL)</th>
+                <th class="moeda">Moeda:</th>
+                <th class="valor">Valor (BRL):</th>
             </tr>
         </thead>
         <tbody>
@@ -117,15 +101,12 @@
     </table>
 
     <script>
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-        }
-
         async function fetchCotacoes() {
             try {
                 const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=usd,eur,gbp,bitcoin,ethereum,litecoin,monero,toncoin&vs_currencies=brl');
                 const data = await res.json();
                 
+                // Certifique-se de que as chaves existem antes de exibir os valores
                 document.getElementById('usd').innerText = data.usd?.brl?.toFixed(2) || "N/A";
                 document.getElementById('eur').innerText = data.eur?.brl?.toFixed(2) || "N/A";
                 document.getElementById('gbp').innerText = data.gbp?.brl?.toFixed(2) || "N/A";
