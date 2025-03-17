@@ -51,31 +51,27 @@
             background-color: #FFD700;
             color: black;
         }
-        .flag-small {
+        .lists-container {
             position: fixed;
             bottom: 10px;
             left: 10px;
-            width: 50px; /* Tamanho pequeno da bandeira */
-            height: 30px;
-            background: linear-gradient(to bottom, #0057B7 50%, #FFD700 50%);
-            border: 1px solid #000;
-        }
-        .info-in-flag {
-            position: fixed;
-            bottom: 10px;
-            left: 70px; /* Posicionado ao lado da bandeira */
             display: flex;
             flex-direction: column;
-            font-size: 14px;
-            color: black; /* Texto escuro para maior contraste */
+            gap: 5px;
         }
-        .info-line {
+        .list {
             display: flex;
             align-items: center;
-            background: linear-gradient(to bottom, #0057B7 50%, #FFD700 50%);
-            padding: 5px;
+            padding: 5px 10px;
             border-radius: 5px;
-            gap: 5px;
+            font-size: 14px;
+            color: #ffffff; /* Texto branco */
+        }
+        .list-blue {
+            background-color: #0057B7; /* Azul para a Ucrânia */
+        }
+        .list-yellow {
+            background-color: #FFD700; /* Amarelo para o Brasil */
         }
         .theme-toggle {
             position: fixed;
@@ -134,11 +130,16 @@
         </table>
     </div>
 
-    <div class="flag-small"></div> <!-- Bandeira pequena no canto inferior esquerdo -->
+    <div class="lists-container">
+        <!-- Lista azul para a Ucrânia -->
+        <div class="list list-blue">
+            🇺🇦 📅 <span id="data-ucrania"></span> ⏰ <span id="hora-ucrania"></span>
+        </div>
 
-    <div class="info-in-flag">
-        <div class="info-line">🇧🇷 📅 <span id="data-brasil"></span> ⏰ <span id="hora-brasil"></span></div>
-        <div class="info-line">🇺🇦 📅 <span id="data-ucrania"></span> ⏰ <span id="hora-ucrania"></span></div>
+        <!-- Lista amarela para o Brasil -->
+        <div class="list list-yellow">
+            🇧🇷 📅 <span id="data-brasil"></span> ⏰ <span id="hora-brasil"></span>
+        </div>
     </div>
 
     <button class="theme-toggle" id="themeToggle">🌙</button>
@@ -196,8 +197,8 @@
         }
 
         fetchCotacoes();
-        setInterval(fetchCotacoes, 60000); // Atualiza cotações a cada 60 segundos
-        setInterval(atualizarDataHora, 1000); // Atualiza data e hora a cada segundo
+        setInterval(fetchCotacoes, 60000);
+        setInterval(atualizarDataHora, 1000);
         atualizarDataHora();
 
         const themeToggle = document.getElementById('themeToggle');
