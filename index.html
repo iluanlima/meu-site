@@ -8,6 +8,9 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
+            background-color: #2B2B2B; /* Fundo cinza escuro por padrão */
+            color: #ffffff; /* Texto branco para modo escuro */
+            transition: background-color 0.3s, color 0.3s;
         }
         table {
             width: 90%;
@@ -37,10 +40,32 @@
             border: 1px solid #000;
         }
         .flag-left {
-            left: 10px; /* Bandeira no canto superior esquerdo */
+            left: 10px;
         }
         .flag-right {
-            right: 10px; /* Bandeira no canto superior direito */
+            right: 10px;
+        }
+        .theme-toggle {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 25px;
+            background-color: #FFD700; /* Amarelo inicial */
+            color: #000; /* Preto inicial */
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .theme-toggle.dark {
+            background-color: #2B2B2B; /* Cinza escuro no modo claro */
+            color: #FFD700; /* Amarelo no modo escuro */
         }
     </style>
 </head>
@@ -78,30 +103,22 @@
         </tbody>
     </table>
 
+    <!-- Botão de alternância de tema -->
+    <button class="theme-toggle" id="themeToggle">☀️</button>
+
     <script>
         async function fetchCotacoes() {
-            const apiKey = 'SUA_API_KEY_AQUI'; // Insira sua chave de API CoinMarketCap
-            const url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest';
-
-            const symbols = ['USD', 'BTC', 'ETH', 'LTC', 'XMR'];
-
             try {
-                const symbolsParam = symbols.join(',');
-                const response = await fetch(`${url}?symbol=${symbolsParam}&convert=BRL`, {
-                    method: 'GET',
-                    headers: {
-                        'X-CMC_PRO_API_KEY': apiKey
-                    }
-                });
-
-                const data = await response.json();
+                // URL da CoinGecko para obter as cotações em BRL
+                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=usd,bitcoin,ethereum,litecoin,monero&vs_currencies=brl');
+                const data = await res.json();
 
                 // Atualizando os valores na tabela
-                document.getElementById('usd').innerText = data.data.USD.quote.BRL.price.toFixed(2);
-                document.getElementById('btc').innerText = data.data.BTC.quote.BRL.price.toFixed(2);
-                document.getElementById('eth').innerText = data.data.ETH.quote.BRL.price.toFixed(2);
-                document.getElementById('ltc').innerText = data.data.LTC.quote.BRL.price.toFixed(2);
-                document.getElementById('xmr').innerText = data.data.XMR.quote.BRL.price.toFixed(2);
+                document.getElementById('usd').innerText = data.usd.brl.toFixed(2);
+                document.getElementById('btc').innerText = data.bitcoin.brl.toFixed(2);
+                document.getElementById('eth').innerText = data.ethereum.brl.toFixed(2);
+                document.getElementById('ltc').innerText = data.litecoin.brl.toFixed(2);
+                document.getElementById('xmr').innerText = data.monero.brl.toFixed(2);
             } catch (error) {
                 console.error('Erro ao buscar cotações:', error);
                 document.querySelectorAll('td[id]').forEach(td => td.innerText = 'Erro');
@@ -110,6 +127,17 @@
 
         fetchCotacoes();
         setInterval(fetchCotacoes, 60000); // Atualiza a cada 60 segundos
+
+        // Alternância de temas (claro e escuro)
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light');
+            const isLight = document.body.classList.contains('light');
+            document.body.style.backgroundColor = isLight ? '#FFFFFF' : '#2B2B2B'; // Cinza escuro para modo escuro
+            document.body.style.color = isLight ? '#000000' : '#FFFFFF';
+            themeToggle.innerHTML = isLight ? '🌙' : '☀️';
+            themeToggle.classList.toggle('dark', !isLight);
+        });
     </script>
 </body>
 </html>
