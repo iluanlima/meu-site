@@ -79,24 +79,36 @@
 
     <script>
         async function fetchCotacoes() {
-            try {
-                // API para moedas tradicionais (Euro)
-                const resForex = await fetch('https://api.frankfurter.dev/latest?from=USD&to=BRL,EUR');
-                const forexData = await resForex.json();
+            const apiKey = 'f90dca9d-fd4e-4aba-807a-32364f238cee'; // Substitua pela sua chave de API CoinMarketCap
+            const url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest';
 
-                // API para criptomoedas
-                const resCrypto = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=usd,bitcoin,ethereum,litecoin,monero&vs_currencies=brl');
-                const cryptoData = await resCrypto.json();
+            // Moedas para buscar
+            const symbols = ['USD', 'EUR', 'BTC', 'ETH', 'LTC', 'XMR'];
+
+            try {
+                // Criando o parâmetro `symbol` com as moedas solicitadas
+                const symbolsParam = symbols.join(',');
+
+                // Fazendo requisição à API CoinMarketCap
+                const response = await fetch(`${url}?symbol=${symbolsParam}&convert=BRL`, {
+                    method: 'GET',
+                    headers: {
+                        'X-CMC_PRO_API_KEY': apiKey
+                    }
+                });
+
+                const data = await response.json();
 
                 // Atualizando valores na tabela
-                document.getElementById('usd').innerText = forexData.rates.BRL.toFixed(2);
-                document.getElementById('eur').innerText = (forexData.rates.EUR * forexData.rates.BRL).toFixed(2);
-                document.getElementById('btc').innerText = cryptoData.bitcoin.brl.toFixed(2);
-                document.getElementById('eth').innerText = cryptoData.ethereum.brl.toFixed(2);
-                document.getElementById('ltc').innerText = cryptoData.litecoin.brl.toFixed(2);
-                document.getElementById('xmr').innerText = cryptoData.monero.brl.toFixed(2);
+                document.getElementById('usd').innerText = data.data.USD.quote.BRL.price.toFixed(2);
+                document.getElementById('eur').innerText = data.data.EUR.quote.BRL.price.toFixed(2);
+                document.getElementById('btc').innerText = data.data.BTC.quote.BRL.price.toFixed(2);
+                document.getElementById('eth').innerText = data.data.ETH.quote.BRL.price.toFixed(2);
+                document.getElementById('ltc').innerText = data.data.LTC.quote.BRL.price.toFixed(2);
+                document.getElementById('xmr').innerText = data.data.XMR.quote.BRL.price.toFixed(2);
             } catch (error) {
                 console.error('Erro ao buscar cotações:', error);
+                // Mostrando "Erro" em caso de falha
                 document.querySelectorAll('td[id]').forEach(td => td.innerText = 'Erro');
             }
         }
