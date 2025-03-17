@@ -23,10 +23,14 @@
             padding: 8px;
             text-align: left;
         }
-        th { /* Estilo para "Moeda:" e "Valor (BRL):" */
-            background-color: #0057B7; /* Azul */
-            color: white; /* Texto branco */
+        th { /* Estilo para "Moeda:" e "Valor (BRL:)" */
+            background-color: #0057B7; /* Azul para "Moeda:" */
+            color: #ffffff; /* Texto branco */
             font-weight: bold;
+        }
+        th:last-child { /* Preto para o texto "Valor (BRL:)" */
+            background-color: #FFD700; /* Fundo amarelo */
+            color: #000000; /* Texto preto */
         }
         td.moeda {
             background-color: #0057B7; /* Fundo azul */
@@ -84,7 +88,7 @@
         <thead>
             <tr>
                 <th class="moeda">Moeda:</th>
-                <th class="valor">Valor (BRL):</th>
+                <th class="valor">Valor (BRL:)</th>
             </tr>
         </thead>
         <tbody>
