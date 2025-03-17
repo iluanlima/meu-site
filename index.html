@@ -14,19 +14,27 @@
         }
         .container {
             position: relative;
-            margin-top: 0; /* Posiciona a tabela no topo */
+            margin-top: 0;
         }
         table {
             width: 100%; /* Ocupa toda a largura da tela */
             margin: 0 auto;
-            border-collapse: collapse;
+            border-collapse: separate; /* Para bordas separadas */
+            border-spacing: 0; /* Remove espaços entre células */
             background-color: white;
-            border: 3px solid white; /* Bordas brancas e visíveis */
+            border: 3px solid white;
         }
         th, td {
-            border: 1px solid white; /* Bordas das células visíveis e brancas */
+            width: 50%; /* Cada coluna ocupa 50% */
             padding: 8px;
             text-align: left;
+            box-sizing: border-box;
+        }
+        th, td {
+            border: 1px solid white; /* Bordas externas */
+        }
+        td + td, th + th { /* Borda fina no meio */
+            border-left: 1px solid white;
         }
         th {
             background-color: #0057B7;
@@ -48,11 +56,11 @@
         .flags-below {
             display: flex;
             justify-content: space-between;
-            margin-top: 10px; /* Espaço entre a tabela e as bandeiras */
+            margin-top: 10px;
         }
         .flag {
-            width: 80px; /* Aumenta o tamanho das bandeiras */
-            height: 50px;
+            width: 120px; /* Aumenta o tamanho das bandeiras */
+            height: 75px;
             background: linear-gradient(to bottom, #0057B7 50%, #FFD700 50%);
             border: 1px solid #000;
         }
@@ -166,7 +174,6 @@
         function atualizarDataHora() {
             const agora = new Date();
 
-            // Formatar data com pontos (dd.mm.aaaa)
             const dataFormatada = (data) => {
                 const dia = String(data.getDate()).padStart(2, '0');
                 const mes = String(data.getMonth() + 1).padStart(2, '0');
@@ -179,11 +186,9 @@
                     .toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', hour12: false });
             };
 
-            // Data e hora do Brasil
             const dataBrasil = dataFormatada(agora);
             const horaBrasil = horaFormatada(agora);
 
-            // Data e hora da Ucrânia
             const opcoesKiev = { timeZone: 'Europe/Kiev' };
             const dataUcrania = dataFormatada(new Date(new Date().toLocaleString('en-US', opcoesKiev)));
             const horaUcrania = horaFormatada(agora, opcoesKiev);
@@ -195,8 +200,8 @@
         }
 
         fetchCotacoes();
-        setInterval(fetchCotacoes, 60000); // Atualiza as cotações a cada 60 segundos
-        setInterval(atualizarDataHora, 1000); // Atualiza data e hora a cada segundo
+        setInterval(fetchCotacoes, 60000);
+        setInterval(atualizarDataHora, 1000);
         atualizarDataHora();
 
         const themeToggle = document.getElementById('themeToggle');
