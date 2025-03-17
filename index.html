@@ -12,12 +12,15 @@
             color: #ffffff;
             transition: background-color 0.3s, color 0.3s;
         }
+        .container {
+            position: relative;
+            margin-top: 60px; /* Move a tabela para baixo */
+        }
         table {
-            width: 90%;
-            margin: 20px auto;
+            width: 100%; /* Estende a tabela para cobrir os lados */
+            margin: 20px 0;
             border-collapse: collapse;
             background-color: white;
-            position: relative;
         }
         th, td {
             border: 1px solid #ddd;
@@ -43,17 +46,17 @@
         }
         .flag {
             position: absolute;
-            top: -30px; /* Posiciona as bandeiras acima da tabela */
-            width: 50px;
-            height: 30px;
+            top: -40px; /* Coloca as bandeiras acima da tabela */
+            width: 60px; /* Ajusta o tamanho das bandeiras para maior visibilidade */
+            height: 40px;
             background: linear-gradient(to bottom, #0057B7 50%, #FFD700 50%);
             border: 1px solid #000;
         }
         .flag-left {
-            left: 0; /* Alinha a bandeira esquerda no topo da tabela */
+            left: 10px;
         }
         .flag-right {
-            right: 0; /* Alinha a bandeira direita no topo da tabela */
+            right: 10px;
         }
         .theme-toggle {
             position: fixed;
@@ -94,38 +97,40 @@
     </style>
 </head>
 <body>
-    <table id="cotacoes">
+    <div class="container">
         <div class="flag flag-left"></div>
         <div class="flag flag-right"></div>
-        <thead>
-            <tr>
-                <th class="moeda">Moeda:</th>
-                <th class="valor">Valor (BRL):</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td class="moeda">Dólar (USD)</td>
-                <td class="valor" id="usd">Carregando...</td>
-            </tr>
-            <tr>
-                <td class="moeda">Bitcoin (BTC)</td>
-                <td class="valor" id="btc">Carregando...</td>
-            </tr>
-            <tr>
-                <td class="moeda">Ethereum (ETH)</td>
-                <td class="valor" id="eth">Carregando...</td>
-            </tr>
-            <tr>
-                <td class="moeda">Litecoin (LTC)</td>
-                <td class="valor" id="ltc">Carregando...</td>
-            </tr>
-            <tr>
-                <td class="moeda">Monero (XMR)</td>
-                <td class="valor" id="xmr">Carregando...</td>
-            </tr>
-        </tbody>
-    </table>
+        <table id="cotacoes">
+            <thead>
+                <tr>
+                    <th class="moeda">Moeda:</th>
+                    <th class="valor">Valor (BRL):</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="moeda">Dólar (USD)</td>
+                    <td class="valor" id="usd">Carregando...</td>
+                </tr>
+                <tr>
+                    <td class="moeda">Bitcoin (BTC)</td>
+                    <td class="valor" id="btc">Carregando...</td>
+                </tr>
+                <tr>
+                    <td class="moeda">Ethereum (ETH)</td>
+                    <td class="valor" id="eth">Carregando...</td>
+                </tr>
+                <tr>
+                    <td class="moeda">Litecoin (LTC)</td>
+                    <td class="valor" id="ltc">Carregando...</td>
+                </tr>
+                <tr>
+                    <td class="moeda">Monero (XMR)</td>
+                    <td class="valor" id="xmr">Carregando...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
     <div class="info-bottom-left">
         <div class="info-line">🇧🇷 📅 <span id="data-brasil"></span> ⏰ <span id="hora-brasil"></span></div>
