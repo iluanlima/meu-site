@@ -107,6 +107,11 @@
     <button class="theme-toggle" id="themeToggle">☀️</button>
 
     <script>
+        // Função para formatar valores em R$ com separadores de milhar
+        function formatarBRL(valor) {
+            return `R$${valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        }
+
         async function fetchCotacoes() {
             try {
                 // URL da CoinGecko para obter as cotações em BRL
@@ -114,11 +119,11 @@
                 const data = await res.json();
 
                 // Atualizando os valores na tabela
-                document.getElementById('usd').innerText = data.usd.brl.toFixed(2);
-                document.getElementById('btc').innerText = data.bitcoin.brl.toFixed(2);
-                document.getElementById('eth').innerText = data.ethereum.brl.toFixed(2);
-                document.getElementById('ltc').innerText = data.litecoin.brl.toFixed(2);
-                document.getElementById('xmr').innerText = data.monero.brl.toFixed(2);
+                document.getElementById('usd').innerText = formatarBRL(data.usd.brl.toFixed(2));
+                document.getElementById('btc').innerText = formatarBRL(Math.round(data.bitcoin.brl)); // Valores arredondados
+                document.getElementById('eth').innerText = formatarBRL(Math.round(data.ethereum.brl));
+                document.getElementById('ltc').innerText = formatarBRL(Math.round(data.litecoin.brl));
+                document.getElementById('xmr').innerText = formatarBRL(Math.round(data.monero.brl));
             } catch (error) {
                 console.error('Erro ao buscar cotações:', error);
                 document.querySelectorAll('td[id]').forEach(td => td.innerText = 'Erro');
