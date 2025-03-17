@@ -8,8 +8,8 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #2B2B2B; /* Fundo cinza escuro */
-            color: #ffffff; /* Texto branco */
+            background-color: #2B2B2B; /* Fundo cinza escuro por padrão */
+            color: #ffffff; /* Texto branco para modo escuro */
             transition: background-color 0.3s, color 0.3s;
         }
         table {
@@ -23,26 +23,13 @@
             padding: 8px;
             text-align: left;
         }
-        th:first-child, .moeda { /* Cor azul escuro mais forte para "Moeda" */
+        th:first-child, .moeda { /* Cor azul para coluna "Moeda" */
             background-color: #0057B7;
-            color: #ffffff; /* Texto branco */
-            font-weight: bold;
+            color: white;
         }
-        th:last-child, .valor { /* Cor amarela mais forte para "Valor" */
+        th:last-child, .valor { /* Cor amarela para coluna "Valor (BRL)" */
             background-color: #FFD700;
-            color: #000000; /* Texto preto */
-            font-weight: bold;
-        }
-        td.moeda {
-            color: #0057B7; /* Azul médio para "Moeda" */
-            font-weight: 600; /* Moderadamente escuro */
-        }
-        td.valor {
-            color: #FFD700; /* Amarelo médio para "Valor" */
-            font-weight: 600; /* Moderadamente escuro */
-        }
-        tbody td {
-            color: #333333; /* Cinza escuro para os valores */
+            color: black;
         }
         .flag {
             position: absolute;
@@ -66,8 +53,8 @@
             height: 50px;
             border: none;
             border-radius: 25px;
-            background-color: #FFD700;
-            color: #000;
+            background-color: #FFD700; /* Amarelo inicial */
+            color: #000; /* Preto inicial */
             font-size: 20px;
             display: flex;
             align-items: center;
@@ -77,14 +64,14 @@
             transition: background-color 0.3s, color 0.3s;
         }
         .theme-toggle.dark {
-            background-color: #2B2B2B;
-            color: #FFD700;
+            background-color: #2B2B2B; /* Cinza escuro no modo claro */
+            color: #FFD700; /* Amarelo no modo escuro */
         }
     </style>
 </head>
 <body>
-    <div class="flag flag-left"></div>
-    <div class="flag flag-right"></div>
+    <div class="flag flag-left"></div> <!-- Bandeira da Ucrânia no canto superior esquerdo -->
+    <div class="flag flag-right"></div> <!-- Bandeira da Ucrânia no canto superior direito -->
     <table id="cotacoes">
         <thead>
             <tr>
@@ -116,20 +103,24 @@
         </tbody>
     </table>
 
+    <!-- Botão de alternância de tema -->
     <button class="theme-toggle" id="themeToggle">☀️</button>
 
     <script>
+        // Função para formatar valores em R$ com separadores de milhar
         function formatarBRL(valor) {
             return `R$${valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         }
 
         async function fetchCotacoes() {
             try {
+                // URL da CoinGecko para obter as cotações em BRL
                 const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=usd,bitcoin,ethereum,litecoin,monero&vs_currencies=brl');
                 const data = await res.json();
 
+                // Atualizando os valores na tabela
                 document.getElementById('usd').innerText = formatarBRL(data.usd.brl.toFixed(2));
-                document.getElementById('btc').innerText = formatarBRL(Math.round(data.bitcoin.brl));
+                document.getElementById('btc').innerText = formatarBRL(Math.round(data.bitcoin.brl)); // Valores arredondados
                 document.getElementById('eth').innerText = formatarBRL(Math.round(data.ethereum.brl));
                 document.getElementById('ltc').innerText = formatarBRL(Math.round(data.litecoin.brl));
                 document.getElementById('xmr').innerText = formatarBRL(Math.round(data.monero.brl));
@@ -140,13 +131,14 @@
         }
 
         fetchCotacoes();
-        setInterval(fetchCotacoes, 60000);
+        setInterval(fetchCotacoes, 60000); // Atualiza a cada 60 segundos
 
+        // Alternância de temas (claro e escuro)
         const themeToggle = document.getElementById('themeToggle');
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('light');
             const isLight = document.body.classList.contains('light');
-            document.body.style.backgroundColor = isLight ? '#FFFFFF' : '#2B2B2B';
+            document.body.style.backgroundColor = isLight ? '#FFFFFF' : '#2B2B2B'; // Cinza escuro para modo escuro
             document.body.style.color = isLight ? '#000000' : '#FFFFFF';
             themeToggle.innerHTML = isLight ? '🌙' : '☀️';
             themeToggle.classList.toggle('dark', !isLight);
