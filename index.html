@@ -8,8 +8,8 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #2B2B2B; /* Tema escuro por padrão */
-            color: #ffffff; /* Texto branco no modo noturno */
+            background-color: #2B2B2B; /* Modo escuro por padrão */
+            color: #ffffff;
             transition: background-color 0.3s, color 0.3s;
         }
         table {
@@ -18,13 +18,11 @@
             border-collapse: separate;
             border-spacing: 0;
             background-color: white;
-            border: 1px solid white; /* Bordas brancas no modo noturno */
-            transition: border-color 0.3s;
+            border: 1px solid white;
         }
         th, td {
             padding: 8px;
-            text-align: left; /* Alinha o texto à esquerda */
-            box-sizing: border-box;
+            text-align: left;
             border: 0.5px solid white;
             transition: border-color 0.3s;
         }
@@ -37,7 +35,7 @@
             color: black;
         }
         th.variacao {
-            width: 20%; /* Largura reduzida */
+            width: 20%;
         }
         td.moeda {
             background-color: #0057B7;
@@ -47,11 +45,6 @@
             background-color: #FFD700;
             color: black;
         }
-        td.variacao {
-            background-color: #FFD700; /* Fundo amarelo */
-            color: black;
-            text-align: left; /* Realinha o texto */
-        }
         td.variacao-positiva {
             color: green;
             font-weight: bold;
@@ -59,26 +52,6 @@
         td.variacao-negativa {
             color: red;
             font-weight: bold;
-        }
-        .theme-light table {
-            border: 1px solid black; /* Bordas pretas no modo diurno */
-        }
-        .theme-light th, .theme-light td {
-            border: 0.5px solid black;
-        }
-        .info-container {
-            position: fixed;
-            bottom: 10px;
-            left: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            font-size: 14px;
-        }
-        .info-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
         }
         .theme-light {
             background-color: #FFFFFF;
@@ -105,6 +78,15 @@
             cursor: pointer;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s, color 0.3s;
+        }
+        .info-container {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -148,26 +130,19 @@
         </table>
     </div>
     <div class="info-container">
-        <div class="info-item">
-            🇧🇷 📅 <span id="data-brasil"></span> ⏰ <span id="hora-brasil"></span>
-        </div>
-        <div class="info-item">
-            🇺🇦 📅 <span id="data-ucrania"></span> ⏰ <span id="hora-ucrania"></span>
-        </div>
+        <div>🇧🇷 📅 <span id="data-brasil"></span> ⏰ <span id="hora-brasil"></span></div>
+        <div>🇺🇦 📅 <span id="data-ucrania"></span> ⏰ <span id="hora-ucrania"></span></div>
     </div>
-
     <button class="theme-toggle" id="themeToggle">🌙</button>
-
     <script>
         async function fetchCotacoes() {
             try {
                 const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=usd,bitcoin,ethereum,litecoin,monero&vs_currencies=brl&include_24hr_change=true');
                 const data = await res.json();
-
-                atualizarCotacao('usd', data.usd.brl, data.usd.brl_24h_change, true);
+                atualizarCotacao('usd', data.usd.brl, data.usd.brl_24h_change);
                 atualizarCotacao('btc', data.bitcoin.brl, data.bitcoin.brl_24h_change);
                 atualizarCotacao('eth', data.ethereum.brl, data.ethereum.brl_24h_change);
-                atualizarCotacao('ltc', data.litecoin.brl, data.litecoin.brl_24h_change, true);
+                atualizarCotacao('ltc', data.litecoin.brl, data.litecoin.brl_24h_change);
                 atualizarCotacao('xmr', data.monero.brl, data.monero.brl_24h_change);
             } catch (error) {
                 console.error('Erro ao buscar cotações:', error);
@@ -175,60 +150,36 @@
             }
         }
 
-        function atualizarCotacao(moeda, valor, variacao, formatarSimples = false) {
+        function atualizarCotacao(moeda, valor, variacao) {
             const valorElement = document.getElementById(moeda);
             const variacaoElement = document.getElementById(`${moeda}-var`);
-
-            // Calcula o valor absoluto da variação e o formata
-            const variacaoAbs = `R$${(valor * Math.abs(variacao) / 100).toFixed(2)}`;
-
-            // Formata o valor da moeda
-            if (formatarSimples) {
-                valorElement.innerText = `R$ ${valor.toFixed(2)}`;
-            } else {
-                valorElement.innerText = `R$ ${(valor / 1000).toLocaleString('pt-BR', { minimumFractionDigits: 0 })}`;
-            }
-
-            // Formata a variação com setas e valor absoluto
-            variacaoElement.className = 'variacao';
-            if (variacao >= 0) {
-                variacaoElement.classList.add('variacao-positiva');
-                variacaoElement.innerText = `▲ +${variacao.toFixed(2)}% (${variacaoAbs})`;
-            } else {
-                variacaoElement.classList.add('variacao-negativa');
-                variacaoElement.innerText = `▼ ${variacao.toFixed(2)}% (${variacaoAbs})`;
-            }
+            valorElement.innerText = `R$ ${valor.toFixed(2)}`;
+            variacaoElement.innerText = variacao >= 0
+                ? `▲ +${variacao.toFixed(2)}%`
+                : `▼ ${variacao.toFixed(2)}%`;
+            variacaoElement.className = variacao >= 0
+                ? 'variacao-positiva'
+                : 'variacao-negativa';
         }
 
         function atualizarDataHora() {
             const agora = new Date();
-            const dataBrasil = agora.toLocaleDateString('pt-BR');
-            const horaBrasil = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-
+            document.getElementById('data-brasil').innerText = agora.toLocaleDateString('pt-BR');
+            document.getElementById('hora-brasil').innerText = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
             const optionsUcrania = { timeZone: 'Europe/Kiev', hour: '2-digit', minute: '2-digit' };
-            const dataUcrania = agora.toLocaleDateString('pt-BR', { timeZone: 'Europe/Kiev' });
-            const horaUcrania = agora.toLocaleTimeString('pt-BR', optionsUcrania);
-
-            // Atualiza os elementos do DOM com as datas e horas
-            document.getElementById('data-brasil').innerText = dataBrasil;
-            document.getElementById('hora-brasil').innerText = horaBrasil;
-            document.getElementById('data-ucrania').innerText = dataUcrania;
-            document.getElementById('hora-ucrania').innerText = horaUcrania;
+            document.getElementById('data-ucrania').innerText = agora.toLocaleDateString('pt-BR', { timeZone: 'Europe/Kiev' });
+            document.getElementById('hora-ucrania').innerText = agora.toLocaleTimeString('pt-BR', optionsUcrania);
         }
-        // Função para buscar as cotações e configurar os intervalos
-        fetchCotacoes();
-        setInterval(fetchCotacoes, 60000); // Atualiza as cotações a cada 60 segundos
-        setInterval(atualizarDataHora, 1000); // Atualiza data e hora a cada segundo
-        atualizarDataHora();
 
-        // Alterna entre os temas claro e escuro
-        const themeToggle = document.getElementById('themeToggle');
-        themeToggle.addEventListener('click', () => {
-            const body = document.body;
-            body.classList.toggle('theme-light');
-            body.classList.toggle('theme-dark');
-            themeToggle.innerHTML = body.classList.contains('theme-light') ? '🌞' : '🌙';
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            document.body.classList.toggle('theme-light');
+            document.body.classList.toggle('theme-dark');
         });
+
+        fetchCotacoes();
+        atualizarDataHora();
+        setInterval(fetchCotacoes, 60000);
+        setInterval(atualizarDataHora, 1000);
     </script>
 </body>
 </html>
