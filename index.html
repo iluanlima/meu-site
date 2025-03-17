@@ -59,10 +59,6 @@
                 <td class="valor" id="eur">Carregando...</td>
             </tr>
             <tr>
-                <td class="moeda">Libra (GBP)</td>
-                <td class="valor" id="gbp">Carregando...</td>
-            </tr>
-            <tr>
                 <td class="moeda">Bitcoin (BTC)</td>
                 <td class="valor" id="btc">Carregando...</td>
             </tr>
@@ -78,33 +74,27 @@
                 <td class="moeda">Monero (XMR)</td>
                 <td class="valor" id="xmr">Carregando...</td>
             </tr>
-            <tr>
-                <td class="moeda">Toncoin (TON)</td>
-                <td class="valor" id="ton">Carregando...</td>
-            </tr>
         </tbody>
     </table>
 
     <script>
         async function fetchCotacoes() {
             try {
-                // API para moedas tradicionais (Euro e Libra)
-                const resForex = await fetch('https://api.frankfurter.dev/latest?from=USD&to=BRL,EUR,GBP');
+                // API para moedas tradicionais (Euro)
+                const resForex = await fetch('https://api.frankfurter.dev/latest?from=USD&to=BRL,EUR');
                 const forexData = await resForex.json();
 
-                // API para criptomoedas (Toncoin e outras)
-                const resCrypto = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=usd,bitcoin,ethereum,litecoin,monero,toncoin&vs_currencies=brl');
+                // API para criptomoedas
+                const resCrypto = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=usd,bitcoin,ethereum,litecoin,monero&vs_currencies=brl');
                 const cryptoData = await resCrypto.json();
 
                 // Atualizando valores na tabela
                 document.getElementById('usd').innerText = forexData.rates.BRL.toFixed(2);
                 document.getElementById('eur').innerText = (forexData.rates.EUR * forexData.rates.BRL).toFixed(2);
-                document.getElementById('gbp').innerText = (forexData.rates.GBP * forexData.rates.BRL).toFixed(2);
                 document.getElementById('btc').innerText = cryptoData.bitcoin.brl.toFixed(2);
                 document.getElementById('eth').innerText = cryptoData.ethereum.brl.toFixed(2);
                 document.getElementById('ltc').innerText = cryptoData.litecoin.brl.toFixed(2);
                 document.getElementById('xmr').innerText = cryptoData.monero.brl.toFixed(2);
-                document.getElementById('ton').innerText = cryptoData.toncoin.brl.toFixed(2);
             } catch (error) {
                 console.error('Erro ao buscar cotações:', error);
                 document.querySelectorAll('td[id]').forEach(td => td.innerText = 'Erro');
