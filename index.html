@@ -76,16 +76,17 @@
             background-color: #2B2B2B;
             color: #FFD700;
         }
-        .info-bottom {
+        .info-bottom-right {
             position: fixed;
             bottom: 10px;
-            left: 10px;
+            right: 10px;
             font-size: 14px;
             display: flex;
-            align-items: center;
+            flex-direction: column;
+            align-items: flex-end;
             gap: 5px;
         }
-        .info-bottom span {
+        .info-line {
             display: flex;
             align-items: center;
             gap: 5px;
@@ -126,12 +127,10 @@
         </tbody>
     </table>
 
-    <div class="info-bottom">
-        <span>📅 <span id="data"></span></span>
-        <span>⏰ <span id="hora"></span></span>
+    <div class="info-bottom-right">
+        <div class="info-line">🇧🇷 📅 <span id="data-brasil"></span> ⏰ <span id="hora-brasil"></span></div>
+        <div class="info-line">🇺🇦 📅 <span id="data-ucrania"></span> ⏰ <span id="hora-ucrania"></span></div>
     </div>
-
-    <button class="theme-toggle" id="themeToggle">☀️</button>
 
     <script>
         function formatarBRL(valor) {
@@ -159,26 +158,23 @@
 
         function atualizarDataHora() {
             const agora = new Date();
-            const data = agora.toLocaleDateString('uk-UA', { day: '2-digit', month: '2-digit', year: 'numeric' });
-            const hora = agora.toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' });
-            document.getElementById('data').innerText = data;
-            document.getElementById('hora').innerText = hora;
+
+            const dataBrasil = agora.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            const horaBrasil = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+            const dataUcrania = agora.toLocaleDateString('uk-UA', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            const horaUcrania = agora.toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Kiev' });
+
+            document.getElementById('data-brasil').innerText = dataBrasil;
+            document.getElementById('hora-brasil').innerText = horaBrasil;
+            document.getElementById('data-ucrania').innerText = dataUcrania;
+            document.getElementById('hora-ucrania').innerText = horaUcrania;
         }
 
         fetchCotacoes();
         setInterval(fetchCotacoes, 60000);
         setInterval(atualizarDataHora, 1000);
         atualizarDataHora();
-
-        const themeToggle = document.getElementById('themeToggle');
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('light');
-            const isLight = document.body.classList.contains('light');
-            document.body.style.backgroundColor = isLight ? '#FFFFFF' : '#2B2B2B';
-            document.body.style.color = isLight ? '#000000' : '#FFFFFF';
-            themeToggle.innerHTML = isLight ? '🌙' : '☀️';
-            themeToggle.classList.toggle('dark', !isLight);
-        });
     </script>
 </body>
 </html>
