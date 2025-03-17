@@ -23,26 +23,27 @@
             padding: 8px;
             text-align: left;
         }
-        th:first-child, .moeda { /* Cor azul escuro mais forte para "Moeda" */
+        th:first-child, .moeda { /* Cor azul mais leve para "Moeda" */
             background-color: #0057B7;
             color: #ffffff; /* Texto branco */
-            font-weight: bold;
+            font-weight: 600; /* Peso médio */
         }
-        th:last-child, .valor { /* Cor amarela mais forte para "Valor" */
+        th:last-child, .valor { /* Cor amarela mais leve para "Valor" */
             background-color: #FFD700;
             color: #000000; /* Texto preto */
-            font-weight: bold;
+            font-weight: 600; /* Peso médio */
         }
         td.moeda {
-            color: #0057B7; /* Azul médio para "Moeda" */
-            font-weight: 600; /* Moderadamente escuro */
+            color: #0057B7; /* Azul moderado para "Moeda" */
+            font-weight: 500; /* Peso mais leve */
         }
         td.valor {
-            color: #FFD700; /* Amarelo médio para "Valor" */
-            font-weight: 600; /* Moderadamente escuro */
+            color: #FFD700; /* Amarelo moderado para "Valor" */
+            font-weight: 500; /* Peso mais leve */
         }
         tbody td {
-            color: #333333; /* Cinza escuro para os valores */
+            color: #555555; /* Cinza médio para maior visibilidade */
+            font-weight: 400; /* Fonte leve, clara e elegante */
         }
         .flag {
             position: absolute;
@@ -146,7 +147,7 @@
         }
 
         fetchCotacoes();
-        setInterval(fetchCotacoes, 60000);
+        setInterval(fetchCotacoes, 60000); // Atualiza a cada 60 segundos
 
         const themeToggle = document.getElementById('themeToggle');
         themeToggle.addEventListener('click', () => {
