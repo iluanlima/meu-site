@@ -157,7 +157,6 @@
     </div>
 
     <button class="theme-toggle" id="themeToggle">🌙</button>
-
     <script>
         async function fetchCotacoes() {
             try {
@@ -179,42 +178,42 @@
             const valorElement = document.getElementById(moeda);
             const variacaoElement = document.getElementById(`${moeda}-var`);
 
-            // Formatar o valor com pontos em vez de vírgulas
             const valorFormatado = `R$${valor.toLocaleString('pt-BR', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
-            }).replace(',', '.')}`; // Substituir ',' por '.'
+            })}`; 
+
+            const valorAbsoluto = (Math.abs(variacao) * valor / 100).toFixed(2);
 
             valorElement.innerText = valorFormatado;
 
-            variacaoElement.className = 'variacao';
-            if (variacao >= 0) {
-                variacaoElement.classList.add('variacao-positiva');
-                variacaoElement.innerText = `▲ +${variacao.toFixed(2)}%`;
-            } else {
-                variacaoElement.classList.add('variacao-negativa');
-                variacaoElement.innerText = `▼ ${variacao.toFixed(2)}%`;
-            }
+            variacaoElement.innerText = variacao >= 0
+                ? `▲ +${variacao.toFixed(2)}% (${valorAbsoluto})`
+                : `▼ ${variacao.toFixed(2)}% (${valorAbsoluto})`;
+
+            variacaoElement.className = variacao >= 0
+                ? 'variacao variacao-positiva'
+                : 'variacao variacao-negativa';
         }
 
-        function atualizarDataHora() {
+                function atualizarDataHora() {
             const agora = new Date();
+            
+            // Atualiza a data e hora no Brasil
             const dataBrasil = agora.toLocaleDateString('pt-BR');
             const horaBrasil = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('data-brasil').innerText = dataBrasil;
+            document.getElementById('hora-brasil').innerText = horaBrasil;
 
+            // Atualiza a data e hora na Ucrânia
             const optionsUcrania = { timeZone: 'Europe/Kiev', hour: '2-digit', minute: '2-digit' };
             const dataUcrania = agora.toLocaleDateString('pt-BR', { timeZone: 'Europe/Kiev' });
             const horaUcrania = agora.toLocaleTimeString('pt-BR', optionsUcrania);
-
-            // Atualiza os elementos do DOM com as datas e horas
-            document.getElementById('data-brasil').innerText = dataBrasil;
-            document.getElementById('hora-brasil').innerText = horaBrasil;
             document.getElementById('data-ucrania').innerText = dataUcrania;
             document.getElementById('hora-ucrania').innerText = horaUcrania;
         }
 
         // Função para buscar as cotações e configurar os intervalos
-                // Função para buscar as cotações e configurar os intervalos
         fetchCotacoes();
         atualizarDataHora();
 
